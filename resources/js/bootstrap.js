@@ -1,6 +1,18 @@
 import _ from 'lodash';
 window._ = _;
 
+// import toastr from 'toastr';
+// window.toastr = toastr
+
+// import $ from 'jquery';
+// import 'datatables.net-bs4';
+// import dt from 'datatables.net-buttons-bs4';
+// import 'select2';
+// window.DataTable = dt(window, $)
+// window.$ = $
+
+import 'bootstrap';
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
