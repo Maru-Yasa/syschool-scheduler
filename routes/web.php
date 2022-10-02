@@ -47,4 +47,12 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/tambah', 'App\Http\Controllers\HariController@tambah')->name('tambah_hari');
     });
 
+    Route::group(['prefix' => 'kelas'], function(){
+        Route::get('/', 'App\Http\Controllers\KelasController@view');
+        Route::get('/{id}/delete', 'App\Http\Controllers\KelasController@delete')->name('delete_kelas');
+        Route::post('/edit', 'App\Http\Controllers\KelasController@edit')->name('edit_kelas');
+        Route::get('/get', 'App\Http\Controllers\KelasController@getAll')->name('get_kelas');
+        Route::post('/tambah', 'App\Http\Controllers\KelasController@tambah')->name('tambah_kelas');
+    });
+
 });

@@ -103,7 +103,14 @@ class JurusanController extends Controller
     public function getAll(Request $req)
     {
         // htmlspecialchars(json_encode($arr), ENT_QUOTES, 'UTF-8')
-        $allJurusan = Jurusan::all();
+        $allJurusan = [];
+
+        if($req->query('search')){
+            $search = $req->query('search');
+            $allJurusan = Jurusan::query()->where('nama_jurusan', 'like', "%$search%")->get();
+        }else{
+            $allJurusan = Jurusan::all();
+        }
         return DataTables::of($allJurusan)->addIndexColumn()->addColumn('aksi', function($row){
             $btn = '<div class="d-flex justify-content-center align-items-center">
             <button onclick="editJurusan(this)" data-json="'.htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8').'" type="button" class="btn mr-1 btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
