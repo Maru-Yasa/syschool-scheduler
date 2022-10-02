@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jurusan;
+use App\Models\Hari;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class JurusanController extends Controller
+class HariController extends Controller
 {
     public function view(Request $req)
     {
-        return view('jurusan');
+        return view('hari');
     }
 
     public function edit(Request $req)
     {
         try {
             $validator = Validator::make($req->all(), [
-                'nama_jurusan' => 'required|min:3|max:50',
+                'nama_hari' => 'required|min:3|max:50',
+                'urut' => 'required|numeric|unique:hari,urut,'.$req->id,
             ]);
 
             if($validator->fails()){
@@ -31,14 +33,14 @@ class JurusanController extends Controller
 
             $data = $req->all();
 
-            $jurusan = Jurusan::all()->where('id', $req->id)->first();
+            $hari = Hari::all()->where('id', $req->id)->first();
 
-            $jurusan->update($data);
+            $hari->update($data);
 
             return response([
                 'status' => true,
                 'message' => "Data berhasil di edit",
-                'data' => $jurusan
+                'data' => $hari
             ], 200);   
 
         } catch (\Throwable $th) {
@@ -54,9 +56,9 @@ class JurusanController extends Controller
     {
         try {
             $validator = Validator::make($req->all(), [
-                'nama_jurusan' => 'required|min:3|max:50',
+                'nama_hari' => 'required|min:3|max:50',
+                'urut' => 'required|numeric|unique:hari,urut',
             ]);
-
             if($validator->fails()){
                 return response([
                     "status" => false,
@@ -66,7 +68,7 @@ class JurusanController extends Controller
             }
 
             $data = $req->except('_token');
-            $newData = Jurusan::create($data);
+            $newData = Hari::create($data);
             return response([
                 'status' => true,
                 'message' => "Sukses menambah data",
@@ -84,7 +86,7 @@ class JurusanController extends Controller
     public function delete(Request $req, $id)
     {
         try {
-            $data = Jurusan::all()->where('id', $id)->first();
+            $data = Hari::all()->where('id', $id)->first();
             $data->delete();
             return response([
                 'status' => true,
@@ -103,7 +105,7 @@ class JurusanController extends Controller
     public function getAll(Request $req)
     {
         // htmlspecialchars(json_encode($arr), ENT_QUOTES, 'UTF-8')
-        $allJurusan = Jurusan::all();
+        $allJurusan = DB::table('hari')->select()->orderBy('urut')->get();
         return DataTables::of($allJurusan)->addIndexColumn()->addColumn('aksi', function($row){
             $btn = '<div class="d-flex justify-content-center align-items-center">
             <button onclick="editJurusan(this)" data-json="'.htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8').'" type="button" class="btn mr-1 btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
@@ -112,6 +114,5 @@ class JurusanController extends Controller
             return $btn;
         })->rawColumns(['aksi'])->make(true);
     }
-
 
 }

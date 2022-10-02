@@ -10,4 +10,5 @@ class Jurusan extends Model
     use HasFactory;
     protected $table = 'jurusan';
 
+    protected $guarded = [];
 }

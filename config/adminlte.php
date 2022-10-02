@@ -311,6 +311,7 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
+        ['header' => 'MASTER DATA'],
         [
             'text'        => 'Guru',
             'url'         => 'guru',
@@ -320,8 +321,15 @@ return [
         ],
         [
             'text'        => 'Jurusan',
-            'url'         => 'admin/jurusan',
+            'url'         => 'jurusan',
             'icon'        => 'fa fa-fw fa-file',
+            // 'label'       => 4,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Hari',
+            'url'         => 'hari',
+            'icon'        => 'fa fa-fw fa-calendar',
             // 'label'       => 4,
             'label_color' => 'success',
         ],

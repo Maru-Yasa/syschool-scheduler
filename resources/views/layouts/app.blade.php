@@ -17,13 +17,7 @@
 @stop
 
 @section('js')
-    <script>
-        toastr.options.closeButton = true;
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-    </script>
+
     @yield('js')
+
 @stop
