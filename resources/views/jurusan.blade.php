@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-<h1 class="fw-bold">Guru</h1>
+<h1 class="fw-bold">Jurusan</h1>
 @endsection
 
 @section('content')
