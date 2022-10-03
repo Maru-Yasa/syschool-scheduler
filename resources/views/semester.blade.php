@@ -2,7 +2,7 @@
 
 @section('header')
 <h1 class="fw-bold">Semester</h1>
-@endsection
+@endsection 
 
 @section('content')
 
@@ -19,8 +19,8 @@
           <form id="formTambahSemester" action="">
             @csrf
             <div class="mb-3">
-                <label for="">Semester ke : </label>
-                <input type="number" min="1" name="nama_semester" placeholder="Semester Ke" class="form-control">
+                <label for="">Nama Semester: </label>
+                <input type="text" name="nama_semester" placeholder="Nama Semester" class="form-control" >
                 <div hidden id="validation_nama_semester" class="text-danger validation">
 
                 </div>
@@ -56,8 +56,8 @@
           <form id="form_edit_semester" action="">
             @csrf
             <div class="mb-3">
-                <label for="">Semester: </label>
-                <input type="number" min="1" name="nama_semester" placeholder="Semester Ke" class="form-control">
+                <label for="">Nama Semester: </label>
+                <input type="text" name="nama_semester" placeholder="Nama Semester" class="form-control">
                 <div hidden id="validation_edit_nama_semester" class="text-danger validation">
 
                 </div>
@@ -193,6 +193,7 @@
     }
     $(document).ready(() => {
         console.log("HI");
+        $('input[name=tanggal_semester]').val(new Date())
 
         $('#role_input').select2()
 
