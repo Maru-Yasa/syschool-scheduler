@@ -120,5 +120,4 @@ class KelasController extends Controller
         })->rawColumns(['aksi', 'jurusan'])->make(true);
     }
 
-
 }

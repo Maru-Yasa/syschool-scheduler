@@ -311,6 +311,13 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
+        [
+            'text'        => 'Beranda',
+            'url'         => 'home',
+            'icon'        => 'fas fa-fw fa-home',
+            // 'label'       => 4,
+            'label_color' => 'success',
+        ],
         ['header' => 'MASTER DATA'],
         [
             'text'        => 'Guru',
@@ -322,7 +329,7 @@ return [
         [
             'text'        => 'Jurusan',
             'url'         => 'jurusan',
-            'icon'        => 'fa fa-fw fa-file',
+            'icon'        => 'fa fa-fw fa-wrench',
             // 'label'       => 4,
             'label_color' => 'success',
         ],

@@ -23,6 +23,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['middleware' => 'auth'], function(){
 
+    Route::group(['prefix' => 'setting_umum'], function(){
+        Route::post('/edit', 'App\Http\Controllers\SettingUmumController@edit')->name('edit_setting_umum');
+        Route::get('/get', 'App\Http\Controllers\SettingUmumController@get')->name('get_setting_umum');
+    });
+
     Route::group(['prefix' => 'guru'], function(){
         Route::get('/', 'App\Http\Controllers\GuruController@view');
         Route::get('/{id}/delete', 'App\Http\Controllers\GuruController@delete')->name('delete_guru');
