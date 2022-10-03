@@ -350,7 +350,7 @@ return [
         [
             'text'        => 'Mata Pelajaran',
             'url'         => 'mapel',
-            'icon'        => 'fa fa-fw fa-calendar',
+            'icon'        => 'fa fa-fw fa-book',
             // 'label'       => 4,
             'label_color' => 'success',
         ],
@@ -358,6 +358,13 @@ return [
             'text'        => 'Ruang Kelas',
             'url'         => 'ruang_kelas',
             'icon'        => 'fa fa-fw fa-landmark',
+            // 'label'       => 4,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Semester',
+            'url'         => 'semester',
+            'icon'        => 'fa fa-fw fa-calendar-alt',
             // 'label'       => 4,
             'label_color' => 'success',
         ],
