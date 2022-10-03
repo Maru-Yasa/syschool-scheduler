@@ -59,5 +59,19 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/get', 'App\Http\Controllers\KelasController@getAll')->name('get_kelas');
         Route::post('/tambah', 'App\Http\Controllers\KelasController@tambah')->name('tambah_kelas');
     });
+    Route::group(['prefix' => 'mapel'], function(){
+        Route::get('/', 'App\Http\Controllers\MapelController@view');
+        Route::get('/{id}/delete', 'App\Http\Controllers\MapelController@delete')->name('delete_mapel');
+        Route::post('/edit', 'App\Http\Controllers\MapelController@edit')->name('edit_mapel');
+        Route::get('/get', 'App\Http\Controllers\MapelController@getAll')->name('get_mapel');
+        Route::post('/tambah', 'App\Http\Controllers\MapelController@tambah')->name('tambah_mapel');
+    });
+    Route::group(['prefix' => 'ruang_kelas'], function(){
+        Route::get('/', 'App\Http\Controllers\RuangKelasController@view');
+        Route::get('/{id}/delete', 'App\Http\Controllers\RuangKelasController@delete')->name('delete_ruang_kelas');
+        Route::post('/edit', 'App\Http\Controllers\RuangKelasController@edit')->name('edit_ruang_kelas');
+        Route::get('/get', 'App\Http\Controllers\RuangKelasController@getAll')->name('get_ruang_kelas');
+        Route::post('/tambah', 'App\Http\Controllers\RuangKelasController@tambah')->name('tambah_ruang_kelas');
+    });
 
 });

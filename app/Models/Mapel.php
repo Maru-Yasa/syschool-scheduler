@@ -10,4 +10,7 @@ class Mapel extends Model
     use HasFactory;
     protected $table = 'mapel';
 
+    protected $guarded = [];
+
+
 }
