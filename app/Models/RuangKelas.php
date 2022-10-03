@@ -10,4 +10,6 @@ class RuangKelas extends Model
     use HasFactory;
     protected $table = 'ruang_kelas';
 
+    protected $guarded = [];
+
 }

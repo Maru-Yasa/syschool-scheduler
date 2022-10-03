@@ -16,7 +16,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form id="formTambahKelas" action="">
+          <form id="formTambahKelas" action=""> 
             @csrf
             <div class="mb-3">
                 <label for="">Nama: </label>

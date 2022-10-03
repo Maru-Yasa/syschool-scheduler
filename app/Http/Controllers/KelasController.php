@@ -12,7 +12,7 @@ class KelasController extends Controller
 {
 
     public function view(Request $req)
-    {
+    { 
         return view('kelas');
     }
 

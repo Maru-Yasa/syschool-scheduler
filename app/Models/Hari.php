@@ -17,3 +17,4 @@ class Hari extends Model
     ];
 
 }
+ 

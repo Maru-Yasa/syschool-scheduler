@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
-class GuruController extends Controller
+class GuruController extends Controller 
 {
 
     public function view(Request $req)
