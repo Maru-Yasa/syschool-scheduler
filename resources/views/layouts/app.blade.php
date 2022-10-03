@@ -4,7 +4,7 @@
 
 @section('content_header')
     @vite(['resources/js/app.js', 'resources/css/app.css'])
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="my-csrf-token" content="{{ csrf_token() }}" />
     @yield('header')
 @stop
 

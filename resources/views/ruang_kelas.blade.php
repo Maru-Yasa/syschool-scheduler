@@ -10,7 +10,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Tambah Mata Pelajaran</h5>
+          <h5 class="modal-title">Tambah Ruang Kelas</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -19,9 +19,18 @@
           <form id="formTambahRuangKelas" acion="">
             @csrf
             <div class="mb-3">
-                <label for="">Nama Mata Pelajaran : </label>
-                <input type="text" name="ruang_kelas" placeholder="Nama mata pelajaran" class="form-control">
+                <label for="">Nama Ruang Kelas : </label>
+                <input type="text" name="nama" placeholder="Nama mata pelajaran" class="form-control">
                 <div hidden id="validation_nama" class="text-danger">
+
+                </div>
+            </div>
+            <div class="mb-3 d-flex flex-column">
+                <label for="">Jurusan: </label>
+                <select type="text" name="owner" placeholder="Jurusan kelas" class="form-control">
+                    <option value="" disabled selected>-- Pilih Jurusan --</option>
+                </select>
+                <div hidden id="validation_owner" class="text-danger validation">
 
                 </div>
             </div>
@@ -39,7 +48,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edit Mata Pelajaran</h5>
+          <h5 class="modal-title">Edit Ruang Kelas</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -48,9 +57,18 @@
           <form id="form_edit_ruang_kelas" action="">
             @csrf
             <div class="mb-3">
-                <label for="">Nama Mata Pelajaran : </label>
+                <label for="">Nama Ruang Kelas : </label>
                 <input type="text" name="nama" placeholder="Nama mata pelajaran" class="form-control">
                 <div hidden id="validation_edit_nama" class="text-danger">
+
+                </div>
+            </div>
+            <div class="mb-3 d-flex flex-column">
+                <label for="">Jurusan: </label>
+                <select type="text" name="owner" placeholder="Jurusan kelas" class="form-control">
+                    <option value="" disabled selected>-- Pilih Jurusan --</option>
+                </select>
+                <div hidden id="validation_owner" class="text-danger validation">
 
                 </div>
             </div>
@@ -66,7 +84,7 @@
 </div>
 
 <div class="bg-white w-100 rounded border p-4">
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalTambahRuangKelas" >Tambah Mata Pelajaran <i class="bi bi-plus"></i></button>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalTambahRuangKelas" >Tambah Ruang Kelas <i class="bi bi-plus"></i></button>
     <table class="table table-bordered w-100" id="table_ruang_kelas">
         <thead class="bg-primary">
                 <td width="5%">No</td>
@@ -83,7 +101,7 @@
 @section('js')
 <x-script /> 
 <script>
-        const ruang_kelas = $("#table_ruang_kelas").DataTable({
+        const table_ruang_kelas = $("#table_ruang_kelas").DataTable({
             ajax: "{{ route('get_ruang_kelas') }}",
             responsive: true,
             columns: [
@@ -94,16 +112,16 @@
             ]
         });
 
-    function editMapel(e){
+    function editRuangKelas(e){
         console.log($(e)[0]);
         const data = $(e).data('json')
-        console.log("🚀 ~ file: mapel.blade.php ~ line 100 ~ editMapel ~ data", data)
-        $("#modalEditMapel").modal('show')
-        $("#modalEditMapel").on('shown.bs.modal', () => {
+        console.log("🚀 ~ file: ruang_kelas.blade.php ~ line 100 ~ editRuang ~ data", data)
+        $("#modalEditRuangKelas").modal('show')
+        $("#modalEditRuangKelas").on('shown.bs.modal', () => {
 
             // initialize
             $("input[name='nama']").val(data.nama)
-            $("#id_mapel").val(data.id)
+            $("#id_ruang_kelas").val(data.id)
             $("#preview_foto_guru").prop('src', `{{ url('image/guru/${data.profile}') }}`)
 
             // submit handler
@@ -113,15 +131,15 @@
                 $.ajax({
                     type: 'post',
                     method: 'post',
-                    url: "{{ route('edit_mapel') }}",
+                    url: "{{ route('edit_ruang_kelas') }}",
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        console.log("🚀 ~ file: mapel.blade.php ~ line 87 ~ $ ~ res", res)
+                        console.log("🚀 ~ file: ruang_kelas.blade.php ~ line 87 ~ $ ~ res", res)
                         if(res.status){
-                            table_mapel.ajax.reload()
-                            $("#modalEditMapel").modal('hide')
+                            table_ruang_kelas.ajax.reload()
+                            $("#modalEditRuang").modal('hide')
                             toastr.success(res.message)
                         }else{
                             toastr.error(res.message)
@@ -133,18 +151,18 @@
                         }
                     },
                     error: (res) => {
-                        $('#button_edit_mapel').prop('disabled', false);
+                        $('#button_edit_ruang_kelas').prop('disabled', false);
                         console.log(res);
                     },
                     complete: () => {
-                        $('#button_edit_mapel').prop('disabled', false);
+                        $('#button_edit_ruang_kelas').prop('disabled', false);
                     }
                 })
-                $('#button_edit_mapel').prop('disabled', true);
+                $('#button_edit_ruang_kelas').prop('disabled', true);
             })
         })
     }
-    function deleteMapel(id) {
+    function deleteRuangKelas(id) {
         Swal.fire({
             icon: 'warning',
             title: 'Peringatan',
@@ -160,11 +178,11 @@
                 $.ajax({
                     type:'get',
                     method: 'get',
-                    url:`{{ url('mapel/${id}/delete') }}`,
+                    url:`{{ url('ruang_kelas/${id}/delete') }}`,
                     success:(res) => {
                         if(res.status){
                             toastr.success(res.message)
-                            table_mapel.ajax.reload()
+                            table_ruang_kelas.ajax.reload()
                         }else{
                             toastr.error(res.message)
                         }
@@ -174,31 +192,48 @@
         })
     }
     $(document).ready(() => {
-        console.log("HI");
+        console.log("HI hj");
 
-        $('#role_input').select2()
-
-        $("#modalTambahMapel").on('shown.bs.modal', () => {
-            $("#formTambahMapel").off().one('submit',(e) => {
+        $('select[name=owner]').select2()
+        $.ajax({
+            type:'get',
+            url: "{{ route('get_jurusan') }}",
+            success: (res) => {
+                const data = res.data
+                    let selectData = []
+                    data.forEach((val) => {
+                        selectData.push({
+                            id: val.id,
+                            text: val.nama_jurusan
+                        })
+                    })
+                    $('select[name=owner]').select2({data: selectData})
+            }
+        })
+        $("#modalTambahRuangKelas").on('shown.bs.modal', () => {
+            $("#formTambahRuangKelas").off().on('submit', (e) => {
                 e.preventDefault()
                 console.log('submit');
-                const formData = new FormData($("#formTambahMapel")[0])
-                $('#buttonTambahMapel').prop('disabled', true);
+                const formData = new FormData($("#formTambahRuangKelas")[0])
+                $('#buttonTambahRuang').prop('disabled', true);
 
                 $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="my-csrf-token"]').attr('content')
+                    },
                     type: 'post',
                     method: 'post',
-                    url: "{{ route('tambah_mapel') }}",
+                    url: "{{ route('tambah_ruang_kelas') }}",
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        $('#buttonTambahMapel').prop('disabled', false);
-                        console.log("🚀 ~ file: mapel.blade.php ~ line 87 ~ $ ~ res", res)
+                        $('#buttonTambahRuang').prop('disabled', false);
+                        console.log("🚀 ~ file: ruang_kelas.blade.php ~ line 87 ~ $ ~ res", res)
                         if(res.status){
                             toastr.success(res.message)
-                            $("#formTambahMapel").trigger('reset')
-                            table_mapel.ajax.reload()
+                            $("#formTambahRuang").trigger('reset')
+                            table_ruang_kelas.ajax.reload()
                         }else{
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
@@ -210,7 +245,7 @@
                         }
                     },
                     error: (res) => {
-                        $('#buttonTambahMapel').prop('disabled', false);
+                        $('#buttonTambahRuang').prop('disabled', false);
 
                         console.log(res);
                     }

@@ -101,6 +101,7 @@
 
             // initialize
             $("input[name='nama_mapel']").val(data.nama_mapel)
+            $("#id_mapel").val(data.id)
 
             // submit handler
             $("#button_edit_mapel").off().on('click', (e) => {

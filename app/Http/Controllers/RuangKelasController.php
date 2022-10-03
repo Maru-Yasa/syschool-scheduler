@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use App\Models\RuangKelas;
 use Illuminate\Support\Facades\Validator;
@@ -26,9 +27,10 @@ class RuangKelasController extends Controller
             return $btn;
         })->addColumn('ruang_kelas', function($row){
             return $row->nama;
-        })->addColumn('ruang_kelas', function($row){
-            return $row->owner;
-        })->rawColumns(['aksi', 'ruang_kelas'])->make(true);
+        })->addColumn('owner', function($row){
+            $owner = Jurusan::all()->where('id', $row->owner)->first();
+            return $owner->nama_jurusan;
+        })->rawColumns(['aksi', 'ruang_kelas', 'owner'])->make(true);
     }
     public function tambah(Request $req)
     {
@@ -65,7 +67,8 @@ class RuangKelasController extends Controller
     {
         try {
             $validator = Validator::make($req->all(), [
-                'nama_kelas' => 'required',
+                'nama' => 'required',
+                'owner' => 'required'
             ]);
 
             if($validator->fails()){

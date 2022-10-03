@@ -75,12 +75,6 @@ class MapelController extends Controller
 
             $data = $req->all();
 
-            // return response([
-            //     'status' => false,
-            //     'message' => "Data berhasil di edit",
-            //     'data' => $data
-            // ], 200);
-
             $mapel = Mapel::all()->where('id', $req->id)->first();
 
             $mapel->update($data);
