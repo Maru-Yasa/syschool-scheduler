@@ -100,7 +100,7 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Mapel</span>
-                        <span id="jumlah_mapel" class="info-box-number">999</span>
+                        <span id="jumlah_mapel" class="info-box-number">Loading...</span>
                     </div>
                 </div>
             </div>
@@ -252,6 +252,7 @@
             $.ajax({url: "{{ route('get_guru') }}", dataType: 'json'}),
             $.ajax({url: "{{ route('get_jurusan') }}"}),
             $.ajax({url: "{{ route('get_kelas') }}"}),
+            $.ajax({url: "{{ route('get_mapel') }}"}),
         ]
 
         $.when(requests).then(function(responses){
@@ -268,6 +269,11 @@
             responses[2].then((res) => {
                 $("#jumlah_kelas").html(res.data.length)
                 $("#jumlah_kelas_loading").hide()
+            })
+
+            responses[3].then((res) => {
+                $("#jumlah_mapel").html(res.data.length)
+                $("#jumlah_mapel_loading").hide()
             })
 
         });
