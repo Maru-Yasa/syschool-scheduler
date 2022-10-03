@@ -12,7 +12,7 @@ class SemesterController extends Controller
     {
         return view('semester'); 
     }
-
+  
     public function edit(Request $req)
     {
         try {

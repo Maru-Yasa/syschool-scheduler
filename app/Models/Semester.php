@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Semester extends Model
 {
-    use HasFactory;
+    use HasFactory; 
     protected $table = 'semester';
 
     protected $guarded = [];

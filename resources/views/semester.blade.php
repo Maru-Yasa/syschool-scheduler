@@ -2,7 +2,7 @@
 
 @section('header')
 <h1 class="fw-bold">Semester</h1>
-@endsection
+@endsection 
 
 @section('content')
 
