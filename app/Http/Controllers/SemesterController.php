@@ -17,7 +17,7 @@ class SemesterController extends Controller
     {
         try {
             $validator = Validator::make($req->all(), [
-                'nama_semester'     => 'required',
+                'nama_semester'     => 'required|min:3',
                 'tanggal_semester'  => 'required'
             ]);
 
@@ -54,7 +54,7 @@ class SemesterController extends Controller
     {
         try {
             $validator = Validator::make($req->all(), [
-                'nama_semester' => 'required',
+                'nama_semester' => 'required|min:3',
                 'tanggal_semester' => 'required',
             ]);
 
