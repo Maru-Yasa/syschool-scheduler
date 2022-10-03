@@ -73,5 +73,12 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/get', 'App\Http\Controllers\RuangKelasController@getAll')->name('get_ruang_kelas');
         Route::post('/tambah', 'App\Http\Controllers\RuangKelasController@tambah')->name('tambah_ruang_kelas');
     });
+    Route::group(['prefix' => 'semester'], function(){
+        Route::get('/', 'App\Http\Controllers\SemesterController@view');
+        Route::get('/{id}/delete', 'App\Http\Controllers\SemesterController@delete')->name('delete_semester');
+        Route::post('/edit', 'App\Http\Controllers\SemesterController@edit')->name('edit_semester');
+        Route::get('/get', 'App\Http\Controllers\SemesterController@getAll')->name('get_semester');
+        Route::post('/tambah', 'App\Http\Controllers\SemesterController@tambah')->name('tambah_semester');
+    });
 
 });
