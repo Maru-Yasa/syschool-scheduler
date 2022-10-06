@@ -10,8 +10,8 @@
             <div class="col-lg-4 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>15 menit</h3>
-                        <p>1 jam pelajaran</p>
+                        <h3><span id="display_durasi_jp">0</span> menit</h3>
+                        <p>Durasi Jam Pembelajaran</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-clock"></i>
@@ -23,7 +23,7 @@
             <div class="col-lg-4 col-6">
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>5 hari</h3>
+                        <h3><span id="display_hari_aktif">0</span> hari</h3>
                         <p>Pembelajaran Aktif</p>
                     </div>
                     <div class="icon">
@@ -36,8 +36,8 @@
             <div class="col-lg-4 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>10 Jam</h3>
-                        <p>Jumlah jam pembelajaran</p>
+                        <h3><span id="display_jumlah_jp">0</span> Jam</h3>
+                        <p>Jumlah Jam Pembelajaran</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-clock"></i>
@@ -159,29 +159,26 @@
                         <i class="fa fa-clock"></i> Setting Jam pelajaran
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form action="" id="edit_setting_jp">
+                            @csrf
                             <div class="mb-3">
                                 <label for="">Jumlah Jam Pembelajaran:</label>
-                                <input type="number" name="nama_sekolah" class="form-control" placeholder="Jumlah jam pelajaran">
+                                <input type="number" name="jumlah_jp" class="form-control" placeholder="Jumlah jam pelajaran">
                                 <small class="form-text text-muted">Jumlah max jam pembelajaran dalam satu hari</small>
+                                <div hidden id="validation_jumlah_jp" class="text-danger validation">
+
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="">Lama Jam Pembelajaran (menit):</label>
-                                <input type="number" name="nama_sekolah" class="form-control" placeholder="Lama satu jam pelajaran">
+                                <input type="number" name="durasi_jp" class="form-control" placeholder="Lama satu jam pelajaran">
                                 <small class="form-text text-muted">Lamanya setiap satu jam pembelajaran</small>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">Mulai Istirahat (Jam Pembelajaran)</label>
-                                <input type="number" class="form-control" placeholder="Mulainya jeda istirahat">
-                                <small class="form-text text-muted">Mulainya jeda istirahat berdasarkan jam pembelajarannya</small>
+                                <div hidden id="validation_durasi_jp" class="text-danger validation">
 
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label for="">Lama Jam Istirahat (menit):</label>
-                                <input type="number" name="nama_sekolah" class="form-control" placeholder="Lama satu jam pelajaran">
-                                <small class="form-text text-muted">Lama jam istirahat dalam menit</small>
-                            </div>
-                            <div class="mb-3">
+                                <input type="text" id="#id_setting_jp" name="id" hidden>
                                 <button class="btn btn-primary" type="submit"><i class="bi bi-save"></i> Simpan</button>
                             </div>
                         </form>
@@ -196,6 +193,24 @@
 @section('js')
 <x-script />
 <script>
+
+    function renderDisplay(){
+        $.ajax({
+            type: 'get',
+            url: "{{ route('get_setting_jp') }}",
+            success: (res) => {
+                if(res.data != null || res.data != undefined){
+
+                    $('input[name=jumlah_jp]').val(res.data.jumlah_jp)
+                    $('input[name=durasi_jp]').val(res.data.durasi_jp)
+                    $('#id_setting_jp').val(res.data.id)
+
+                    $("#display_durasi_jp").html(res.data.durasi_jp)
+                    $("#display_jumlah_jp").html(res.data.jumlah_jp)
+                }
+            }
+        })
+    }
 
     $(document).ready(() => {
 
@@ -229,6 +244,56 @@
                     error: (res) => {
                         console.log(res);
                     }
+            })
+        })
+
+
+        // initiliase data settingjp
+
+        renderDisplay()
+
+        $.ajax({
+            type: 'get',
+            url: "{{ route('get_hari') }}",
+            success: (res) => {
+                const hariCount = res.data.length
+
+                $("#display_hari_aktif").html(hariCount)
+            }
+        })
+
+        // handle edit settingJP
+        $("#edit_setting_jp").off().on('submit', (e) => {
+            e.preventDefault()
+            const formData = new FormData($("#edit_setting_jp")[0])
+
+            $.ajax({
+                type: 'post',
+                method: 'post',
+                url: "{{ route('edit_setting_jp') }}",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: (res) => {
+                    $(`input`).removeClass('is-invalid')
+                    $('.validation').empty().prop('hidden', true)
+                    console.log("🚀 ~ file: jurusan.blade.php ~ line 87 ~ $ ~ res", res)
+                    if(res.status){
+                        toastr.success(res.message)
+                        renderDisplay()
+                    }else{
+                        toastr.error(res.message)
+                        Object.keys(res.messages).forEach((value, key) => {
+                            $(`*[name=${value}]`).addClass('is-invalid')
+                            console.log($(`#validation_${value}`));
+                            $(`#validation_${value}`).html(res.messages[value])
+                            $(`#validation_${value}`).prop('hidden', false)                               
+                        })
+                        }
+                },
+                error: (res) => {
+                    console.log(res);
+                }
             })
         })
 

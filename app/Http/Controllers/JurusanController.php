@@ -117,7 +117,10 @@ class JurusanController extends Controller
             <button onclick="deleteJurusan('.$row->id.')" type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
         </div>';
             return $btn;
-        })->rawColumns(['aksi'])->make(true);
+        })->addColumn('icon', function($row){
+            $element = '<i class="fs-1 '.$row->icon.'"></i>';
+            return $element;
+        })->rawColumns(['aksi', 'icon'])->make(true);
     }
 
 

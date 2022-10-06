@@ -144,4 +144,14 @@ class GuruController extends Controller
         })->rawColumns(['aksi', 'nama'])->make(true);
     }
 
+    public function api(Request $req)
+    {
+        $guru = Guru::all();
+        return response([
+            "status" => 'success',
+            'message' => 'berhasil mengambil data guru',
+            'data' => $guru
+        ], 200);
+    }
+
 }

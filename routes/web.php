@@ -28,6 +28,12 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/get', 'App\Http\Controllers\SettingUmumController@get')->name('get_setting_umum');
     });
 
+    Route::group(['prefix' => 'setting_jp'], function(){
+        Route::post('/edit', 'App\Http\Controllers\SettingJPController@edit')->name('edit_setting_jp');
+        Route::get('/get', 'App\Http\Controllers\SettingJPController@getAll')->name('get_setting_jp');
+    });
+
+
     Route::group(['prefix' => 'guru'], function(){
         Route::get('/', 'App\Http\Controllers\GuruController@view');
         Route::get('/{id}/delete', 'App\Http\Controllers\GuruController@delete')->name('delete_guru');

@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jurusan', function (Blueprint $table) {
+        Schema::create('setting_jp', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_jurusan');
-            $table->string('icon')->default('bi bi-x-lg');
+            $table->integer('jumlah_jp');
+            $table->integer('durasi_jp');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jurusan');
+        Schema::dropIfExists('setting_jp');
     }
 };

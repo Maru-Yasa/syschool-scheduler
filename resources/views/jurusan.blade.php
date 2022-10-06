@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div class="modal fade" tabindex="-1" id="modalTambahJurusan" role="dialog">
+<div class="modal fade" tabindex="" id="modalTambahJurusan" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -25,6 +25,15 @@
 
                 </div>
             </div>
+            <div class="mb-3 d-flex flex-column">
+                <label for="">Icon Jurusan: </label>
+                <select type="text" id="jurusan_icon" name="icon" placeholder="Icon jurusan" class="form-control">
+                    <option value="" disabled selected>-- Pilih Icon --</option>
+                </select>
+                <div hidden id="validation_icon" class="text-danger validation">
+
+                </div>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="submit" id="buttonTambahJurusan" class="btn btn-primary">Tambah</button>
@@ -35,7 +44,7 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" id="modalEditJurusan" role="dialog">
+<div class="modal fade" tabindex="" id="modalEditJurusan" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -51,6 +60,15 @@
                 <label for="">Nama: </label>
                 <input type="text" name="nama_jurusan" placeholder="Nama jurusan" class="form-control">
                 <div hidden id="validation_edit_nama_jurusan" class="text-danger validation">
+
+                </div>
+            </div>
+            <div class="mb-3 d-flex flex-column">
+                <label for="">Icon Jurusan: </label>
+                <select type="text" id="jurusan_icon" name="icon" placeholder="Icon jurusan" class="jurusan_icon form-control">
+                    <option value="" disabled selected>-- Pilih Icon --</option>
+                </select>
+                <div hidden id="validation_edit_icon" class="text-danger validation">
 
                 </div>
             </div>
@@ -70,6 +88,7 @@
     <table class="table table-bordered w-100" id="table_jurusan">
         <thead class="bg-primary">
                 <td width="5%">No</td>
+                <td width="5%">Icons</td>
                 <td>Nama</td>
                 <td width="5%">Aksi</td>
         </thead>
@@ -87,6 +106,7 @@
             responsive: true,
             columns: [
                 { data: 'DT_RowIndex', class: 'text-center' },
+                { data: 'icon', class: 'text-center' },
                 { data: 'nama_jurusan' },
                 { data: 'aksi' }
             ]
@@ -103,6 +123,8 @@
             $("input[name='nama_jurusan']").val(data.nama_jurusan)
             $("#id_jurusan").val(data.id)
             $("#preview_foto_jurusan").prop('src', `{{ url('image/jurusan/${data.profile}') }}`)
+            $("[id=jurusan_icon]").val(data.icon).trigger('change')
+
 
             // submit handler
             $("#form_edit_jurusan").off().on('submit',(e) => {
@@ -173,10 +195,33 @@
             }
         })
     }
+
+    function renderInputIcon(id) {
+        let biIcons = [];
+        $.ajax({
+            type: 'get', 
+            url: "https://gist.githubusercontent.com/Maru-Yasa/0660e0f13ebe6dbebfcaf65f32ef9479/raw/1ec4305acd6da2f0e220a72e64e384d83d2b4971/bi-icons.json",
+            success: (res) => {                
+                const icons = JSON.parse(res).icons
+                icons.forEach((val) => {
+                    biIcons.push({
+                        id: val,
+                        text: `<i class="bi ${val}"></i>`
+                    })
+                })
+                $(`[id=${id}]`).select2({
+                    data: biIcons,
+                    escapeMarkup: function (text) { return text; },
+                })
+
+            }
+        })
+    }
+
     $(document).ready(() => {
         console.log("HI");
 
-        $('#role_input').select2()
+        renderInputIcon('jurusan_icon')
 
         $("#modalTambahJurusan").on('shown.bs.modal', () => {
             $("#formTambahJurusan").off().on('submit',(e) => {
