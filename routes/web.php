@@ -33,6 +33,12 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/get', 'App\Http\Controllers\SettingJPController@getAll')->name('get_setting_jp');
     });
 
+    Route::group(['prefix' => 'setting_jeda'], function(){
+        Route::get('/{id}/delete', 'App\Http\Controllers\SettingJedaController@delete')->name('delete_jeda');
+        Route::post('/edit', 'App\Http\Controllers\SettingJedaController@edit')->name('edit_jeda');
+        Route::get('/get', 'App\Http\Controllers\SettingJedaController@getAll')->name('get_jeda');
+        Route::post('/tambah', 'App\Http\Controllers\SettingJedaController@tambah')->name("tambah_jeda");
+    });
 
     Route::group(['prefix' => 'guru'], function(){
         Route::get('/', 'App\Http\Controllers\GuruController@view');

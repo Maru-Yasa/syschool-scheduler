@@ -188,6 +188,122 @@
 
         </div>
     </div>
+
+{{-- modal --}}
+
+<div class="modal fade" tabindex="" id="modal_tambah_jeda" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Jeda</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="form_tambah_jeda" action="">
+            @csrf
+            <div class="mb-3">
+                <label for="">Nama Jeda: </label>
+                <input type="text" name="nama_jeda" placeholder="Nama jeda" class="form-control">
+                <div hidden id="validation_nama_jeda" class="text-danger validation">
+
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="">Mulai Jeda (JP): </label>
+                <input type="number" name="mulai_jeda" placeholder="Mulai jeda" class="form-control">
+                <div hidden id="validation_mulai_jeda" class="text-danger validation">
+
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="">Durasi Jeda (Menit): </label>
+                <input type="number" name="durasi_jeda" placeholder="Durasi jeda" class="form-control">
+                <div hidden id="validation_durasi_jeda" class="text-danger validation">
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" id="buttonTambahJurusan" class="btn btn-primary">Edit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="" id="modal_edit_jeda" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Jeda</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="form_edit_jeda" action="">
+            @csrf
+            <div class="mb-3">
+                <label for="">Nama Jeda: </label>
+                <input type="text" name="nama_jeda" placeholder="Nama jeda" class="form-control edit">
+                <div hidden id="validation_edit_nama_jeda" class="text-danger validation">
+
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="">Mulai Jeda (JP): </label>
+                <input type="number" name="mulai_jeda" placeholder="Mulai jeda" class="form-control edit">
+                <div hidden id="validation_edit_mulai_jeda" class="text-danger validation">
+
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="">Durasi Jeda (Menit): </label>
+                <input type="number" name="durasi_jeda" placeholder="Durasi jeda" class="form-control edit">
+                <div hidden id="validation_edit_durasi_jeda" class="text-danger validation">
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="text" id="id_jeda" name="id" hidden>
+          <button type="submit" id="buttonTambahJurusan" class="btn btn-primary">Tambah</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+{{-- end modal --}}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <i class="bi bi-gear-fill"></i> Setting Jeda
+                </div>
+                <div class="card-body">
+                    <button id="button_tambah_jeda" class="btn btn-primary mb-3"><i class="bi bi-plus-circle"></i> Tambah Jeda</button>
+                    <table class="table table-bordered" id="table_jeda">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Jeda</th>
+                                <th>Mulai Jeda (JP)</th>
+                                <th>Durasi Jeda</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js')
@@ -212,7 +328,151 @@
         })
     }
 
+    function editSettingJeda(e){
+        console.log($(e)[0]);
+        const data = $(e).data('json')
+        console.log("🚀 ~ file: jurusan.blade.php ~ line 100 ~ editJurusan ~ data", data)
+        $("#modal_edit_jeda").modal('show')
+        $("#modal_edit_jeda").on('shown.bs.modal', () => {
+
+            // initialize
+            $("input[name='nama_jeda'].edit").val(data.nama_jeda)
+            $("input[name='mulai_jeda'].edit").val(data.mulai_jeda)
+            $("input[name='durasi_jeda'].edit").val(data.durasi_jeda)
+            $("#id_jeda").val(data.id)
+
+
+            // submit handler
+            $("#form_edit_jeda").off().on('submit',(e) => {
+                e.preventDefault()
+                $(`input`).removeClass('is-invalid')
+                console.log("submit");
+                const formData = new FormData($("#form_edit_jeda")[0])
+                $('#button_edit_jeda').prop('disabled', true);
+                $.ajax({
+                    type: 'post',
+                    method: 'post',
+                    url: "{{ route('edit_jeda') }}",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: (res) => {
+                        $(`input`).removeClass('is-invalid')
+                        $('.validation').empty().prop('hidden', true)
+                        $('#button_edit_jurusan').prop('disabled', false);
+                        console.log("🚀 ~ file: jurusan.blade.php ~ line 87 ~ $ ~ res", res)
+                        if(res.status){
+                            table_jeda.ajax.reload()
+                            $("#modal_edit_jeda").modal('hide')
+                            toastr.success(res.message)
+                        }else{
+                            toastr.error(res.message)
+                            Object.keys(res.messages).forEach((value, key) => {
+                                $(`*[name=${value}]`).addClass('is-invalid')
+                                $(`#validation_edit_${value}`).html(res.messages[value])
+                                $(`#validation_edit_${value}`).prop('hidden', false)                               
+                            })
+                        }
+                    },
+                    error: (res) => {
+                        $('#button_edit_jeda').prop('disabled', false);
+                        console.log(res);
+                    }
+                })
+            })
+        })
+    }
+
+    function deleteSettingJeda(id) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Peringatan',
+            text: "Anda yakin ingin menghapus data ini?",
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonText: "Ya, hapus",
+            cancelButtonText: "tidak",
+            confirmButtonColor: '#ff4444',
+            iconColor: '#ff4444',
+        }).then((e) => {
+            if(e.isConfirmed){
+                $.ajax({
+                    type:'get',
+                    method: 'get',
+                    url:`{{ url('setting_jeda/${id}/delete') }}`,
+                    success:(res) => {
+                        if(res.status){
+                            toastr.success(res.message)
+                            table_jeda.ajax.reload()
+                        }else{
+                            toastr.error(res.message)
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    const table_jeda = $("#table_jeda").DataTable({
+        ajax: "{{ route('get_jeda') }}",
+        responsive: true,
+        columns: [
+            { data: 'DT_RowIndex', class: 'text-center' },
+            { data: 'nama_jeda' },
+            { data: 'mulai_jeda' },
+            { data: 'durasi_jeda' },
+            { data: 'aksi' },
+        ]
+    })
+
     $(document).ready(() => {
+
+        $("#modal_tambah_jeda").on('shown.bs.modal', () => {
+            $("#form_tambah_jeda").off().on('submit',(e) => {
+                e.preventDefault()
+                console.log('submit');
+                const formData = new FormData($("#form_tambah_jeda")[0])
+                $('#button_tambah_jeda').prop('disabled', true);
+
+                $.ajax({
+                    type: 'post',
+                    method: 'post',
+                    url: "{{ route('tambah_jeda') }}",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: (res) => {
+                        $(`input`).removeClass('is-invalid')
+                        $('.validation').empty().prop('hidden', true)
+                        $('#button_tambah_jeda').prop('disabled', false);
+                        console.log("🚀 ~ file: jurusan.blade.php ~ line 87 ~ $ ~ res", res)
+                        if(res.status){
+                            toastr.success(res.message)
+                            $("#form_tambah_jeda").trigger('reset')
+                            table_jeda.ajax.reload()
+                        }else{
+                            toastr.error(res.message)
+                            Object.keys(res.messages).forEach((value, key) => {
+                                $(`*[name=${value}]`).addClass('is-invalid')
+                                console.log($(`#validation_${value}`));
+                                $(`#validation_${value}`).html(res.messages[value])
+                                $(`#validation_${value}`).prop('hidden', false)                               
+                            })
+                        }
+                    },
+                    error: (res) => {
+                        $('#button_tambah_jeda').prop('disabled', false);
+
+                        console.log(res);
+                    }
+                })
+
+            })  
+        })
+        // tambah jeda handler
+        $("#button_tambah_jeda").off().on('click', () => {
+            $("#modal_tambah_jeda").modal('show')
+        })
 
         $("#form_setting_umum").off().on('submit', (e) => {
             e.preventDefault()

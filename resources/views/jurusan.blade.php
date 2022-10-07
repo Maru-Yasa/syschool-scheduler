@@ -166,6 +166,7 @@
             })
         })
     }
+    
     function deleteJurusan(id) {
         Swal.fire({
             icon: 'warning',

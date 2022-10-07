@@ -21,23 +21,23 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        //     User::create([
-        //         'name' => 'root',
-        //         'email' => 'root@root.com',
-        //         'password' => Hash::make('tempe12345'),
-        //         'role' => 'root'
-        //     ]);
+            User::create([
+                'name' => 'root',
+                'email' => 'root@root.com',
+                'password' => Hash::make('tempe12345'),
+                'role' => 'root'
+            ]);
 
-        // SettingUmum::create([
-        //     'nama_sekolah' => 'SMA 1 CONTOH',
-        //     "tingkat" => "sma",
-        //     "alamat" => ""
-        // ]);
+        SettingUmum::create([
+            'nama_sekolah' => 'SMA 1 CONTOH',
+            "tingkat" => "sma",
+            "alamat" => ""
+        ]);
 
-        // SettingJP::create([
-        //     'jumlah_jp' => 10,
-        //     'durasi_jp' => 45
-        // ]);
+        SettingJP::create([
+            'jumlah_jp' => 10,
+            'durasi_jp' => 45
+        ]);
 
         $hari = ['Senin', 'Selasa', "Rabu", 'Kamis', "Juma't"];
         foreach ($hari as $key => $value) {
