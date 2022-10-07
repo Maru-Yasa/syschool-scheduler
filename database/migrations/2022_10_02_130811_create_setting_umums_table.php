@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_sekolah');
             $table->string('tingkat');
+            $table->string('logo')->nullable();
             $table->string('alamat')->nullable();
             $table->timestamps();
         });

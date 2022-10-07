@@ -24,12 +24,12 @@ return new class extends Migration
             $table->integer('jam_awal');
             $table->integer('jam_akhir');
             
-            $table->foreign('id_guru')->references('id')->on('guru');
-            $table->foreign('id_mapel')->references('id')->on('mapel');
-            $table->foreign('id_semester')->references('id')->on('semester');
-            $table->foreign('id_kelas')->references('id')->on('kelas');
-            $table->foreign('id_ruang_kelas')->references('id')->on('ruang_kelas');
-            $table->foreign('id_hari')->references('id')->on('hari');
+            $table->foreign('id_guru')->references('id')->on('guru')->cascadeOnDelete();
+            $table->foreign('id_mapel')->references('id')->on('mapel')->cascadeOnDelete();
+            $table->foreign('id_semester')->references('id')->on('semester')->cascadeOnDelete();
+            $table->foreign('id_kelas')->references('id')->on('kelas')->cascadeOnDelete();
+            $table->foreign('id_ruang_kelas')->references('id')->on('ruang_kelas')->cascadeOnDelete();
+            $table->foreign('id_hari')->references('id')->on('hari')->cascadeOnDelete();
             $table->timestamps();
         });
     }

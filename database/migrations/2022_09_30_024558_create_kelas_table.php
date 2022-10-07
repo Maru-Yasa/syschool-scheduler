@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_jurusan');
             $table->string('nama_kelas');
 
-            $table->foreign('id_jurusan')->references('id')->on('jurusan');
+            $table->foreign('id_jurusan')->references('id')->on('jurusan')->cascadeOnDelete();
             $table->timestamps();
         });
     }
