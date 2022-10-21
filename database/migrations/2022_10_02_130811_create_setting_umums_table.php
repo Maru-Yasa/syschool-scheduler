@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('tingkat');
             $table->string('logo')->nullable();
             $table->string('alamat')->nullable();
+            $table->unsignedBigInteger('id_semester')->nullable();
+            // $table->foreignId('id_semester')->constrained('semester')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_semester')->references('id')->on('semester')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

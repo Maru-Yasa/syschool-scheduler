@@ -137,6 +137,22 @@
                                 </div>
                             </div>
                             <div class="mb-3">
+                                <label for="">Semester Sekarang:</label>
+                                <select class="form-control" name="id_semester" id="id_semester">
+
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Logo Sekolah:</label>
+                                <input type="file" name="logo" class="form-control" placeholder="Logo sekolah">
+                                <div hidden id="validation_nama_sekolah" class="text-danger validation">
+
+                                </div>
+                                <div class="p-3 mt-3">
+                                    <img src="" id="preview_logo" class="img-fluid" width="128" alt="">
+                                </div>
+                            </div>
+                            <div class="mb-3">
                                 <label for="">Alamat Sekolah:</label>
                                 <textarea type="text" name="alamat" class="form-control" placeholder="Alamat sekolah">
                                 </textarea>
@@ -427,6 +443,24 @@
 
     $(document).ready(() => {
 
+        $.ajax({
+            type: 'get',
+            url: `{{ route('get_semester') }}`,
+            success: (res) => {
+                let data = [];
+                res.data.forEach(semester => {
+                    data.push({
+                        id: semester.id,
+                        text: semester.nama_semester
+                    })
+                });
+                console.log(data);
+                $("select[name=id_semester]").select2({
+                    data: data
+                })
+            }
+        })
+
         $("#modal_tambah_jeda").on('shown.bs.modal', () => {
             $("#form_tambah_jeda").off().on('submit',(e) => {
                 e.preventDefault()
@@ -569,6 +603,7 @@
                     $("select[name=tingkat]").val(res.data.tingkat).trigger('change')
                     $("textarea[name=alamat]").val(res.data.alamat)
                     $("input[name=id]").val(res.data.id)
+                    $("#preview_logo").prop('src', `image/logo/${res.data.logo}`)
                 }
             }
         })

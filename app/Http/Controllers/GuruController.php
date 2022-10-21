@@ -141,6 +141,8 @@ class GuruController extends Controller
             <span class="">'.$row->nama.'</span>
             </div>';
             return $img;
+        })->addColumn('nama_raw', function($row){
+            return $row->nama;
         })->rawColumns(['aksi', 'nama'])->make(true);
     }
 

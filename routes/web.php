@@ -48,6 +48,15 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/tambah', 'App\Http\Controllers\GuruController@tambah')->name("tambah_guru");
     });
 
+    Route::group(['prefix' => 'jadwal'], function(){
+        Route::get('/', 'App\Http\Controllers\JadwalController@view');
+        Route::get('/tambah', 'App\Http\Controllers\JadwalController@addView');
+        Route::get('/{id}/delete', 'App\Http\Controllers\JadwalController@delete')->name('delete_jadwal');
+        Route::post('/edit', 'App\Http\Controllers\JadwalController@edit')->name('edit_jadwal');
+        Route::get('/get', 'App\Http\Controllers\JadwalController@getAll')->name('get_jadwal');
+        Route::post('/tambah', 'App\Http\Controllers\JadwalController@add')->name("tambah_jadwal");
+    });
+
     Route::group(['prefix' => 'jurusan'], function(){
         Route::get('/', 'App\Http\Controllers\JurusanController@view');
         Route::get('/{id}/delete', 'App\Http\Controllers\JurusanController@delete')->name('delete_jurusan');
@@ -66,6 +75,7 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::group(['prefix' => 'kelas'], function(){
         Route::get('/', 'App\Http\Controllers\KelasController@view');
+        Route::get('/getByIdJurusan', 'App\Http\Controllers\KelasController@getAllByIdJurusan')->name('get_kelas_by_id_jurusan');
         Route::get('/{id}/delete', 'App\Http\Controllers\KelasController@delete')->name('delete_kelas');
         Route::post('/edit', 'App\Http\Controllers\KelasController@edit')->name('edit_kelas');
         Route::get('/get', 'App\Http\Controllers\KelasController@getAll')->name('get_kelas');

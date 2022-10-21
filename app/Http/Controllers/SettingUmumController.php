@@ -23,7 +23,8 @@ class SettingUmumController extends Controller
         try {
             $validator = Validator::make($req->all(), [
                 'nama_sekolah' => 'required|min:3|max:50',
-                'tingkat' => "required"
+                'tingkat' => "required",
+                'logo' => 'max:10000|mimes:jpg,jepg,png'
             ]);
 
             if($validator->fails()){
@@ -35,8 +36,19 @@ class SettingUmumController extends Controller
             }
 
             $data = $req->all();
-
             $settingUmum = SettingUmum::all()->where('id', $req->id)->first();
+
+            if($req->file('logo')){
+                $oldFilename = $settingUmum->logo;
+                $file = $req->file('logo');
+                $filename = date('YmdHi').$file->getClientOriginalName();
+                $file->move(public_path('image/logo'), $filename);
+                $data['logo'] = $filename;
+
+                if($oldFilename != null && $oldFilename !== 'default.png' && file_exists(public_path('image/logo/'.$oldFilename))){
+                    unlink(public_path('image/logo/'.$oldFilename));
+                }
+            }
 
             $settingUmum->update($data);
 

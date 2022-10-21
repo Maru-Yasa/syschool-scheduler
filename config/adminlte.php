@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Guru;
+
 return [
 
     /*
@@ -311,6 +313,7 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
+        ['header' => 'SCHEDULER PRO'],
         [
             'text'        => 'Beranda',
             'url'         => 'home',
@@ -318,12 +321,29 @@ return [
             // 'label'       => 4,
             'label_color' => 'success',
         ],
+        [
+            'text'        => 'Jadwal',
+            'icon'        => 'fas fa-fw fa-calendar',
+            // 'label'       => 4,
+            'submenu'     => [
+                [
+                    'text' => 'Buat Jadwal',
+                    'url'  => 'jadwal/tambah',
+                    'icon' => 'fas fa-fw fa-plus'
+                ],
+                [
+                    'text' => 'Lihat Jadwal',
+                    'url'  => 'jadwal',
+                    'icon' => 'fas fa-fw fa-eye'
+                ]
+            ],
+        ],
         ['header' => 'MASTER DATA'],
         [
             'text'        => 'Guru',
             'url'         => 'guru',
             'icon'        => 'fa fa-fw fa-users',
-            // 'label'       => 4,
+            // 'label'       => Guru::all()->count(),
             'label_color' => 'success',
         ],
         [

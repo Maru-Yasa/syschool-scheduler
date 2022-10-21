@@ -107,6 +107,7 @@ class KelasController extends Controller
     public function getAll(Request $req)
     {
         // htmlspecialchars(json_encode($arr), ENT_QUOTES, 'UTF-8')
+        $allKelas = [];
         $allKelas = Kelas::all();
         return DataTables::of($allKelas)->addIndexColumn()->addColumn('aksi', function($row){
             $btn = '<div class="d-flex justify-content-center align-items-center">
@@ -119,5 +120,27 @@ class KelasController extends Controller
             return $jurusan->nama_jurusan;
         })->rawColumns(['aksi', 'jurusan'])->make(true);
     }
+
+    public function getAllByIdJurusan(Request $req)
+    {
+        $id_jurusan = $req->query('id_jurusan');
+        $allKelas = [];
+        if($id_jurusan){
+            $allKelas = Kelas::all()->where('id_jurusan', $id_jurusan);
+        }else{
+            $allKelas = Kelas::all();
+        }
+        return DataTables::of($allKelas)->addIndexColumn()->addColumn('aksi', function($row){
+            $btn = '<div class="d-flex justify-content-center align-items-center">
+            <button onclick="editKelas(this)" data-json="'.htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8').'" type="button" class="btn mr-1 btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
+            <button onclick="deleteKelas('.$row->id.')" type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
+        </div>';
+            return $btn;
+        })->addColumn('jurusan', function($row){
+            $jurusan = Jurusan::all()->where('id', $row->id_jurusan)->first();
+            return $jurusan->nama_jurusan;
+        })->rawColumns(['aksi', 'jurusan'])->make(true);
+    }
+
 
 }
