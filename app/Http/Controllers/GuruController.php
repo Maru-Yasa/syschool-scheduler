@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
+use App\Models\Jadwal;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -154,6 +155,19 @@ class GuruController extends Controller
             'message' => 'berhasil mengambil data guru',
             'data' => $guru
         ], 200);
+    }
+
+    public function getJadwalGuru(Request $req)
+    {
+        $id_guru = $req->query('id_guru');
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_guru', $id_guru)->get();
+        $jadwal_group = [];
+        foreach ($jadwal_raw as $key => $jadwal) {
+            $jadwal_group[$jadwal->id_kelas][] = $jadwal;
+        }
+
+        return response($jadwal_group);
+
     }
 
 }

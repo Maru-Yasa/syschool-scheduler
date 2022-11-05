@@ -46,6 +46,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/edit', 'App\Http\Controllers\GuruController@edit')->name('edit_guru');
         Route::get('/get', 'App\Http\Controllers\GuruController@getAll')->name('get_guru');
         Route::post('/tambah', 'App\Http\Controllers\GuruController@tambah')->name("tambah_guru");
+
+        Route::get('/jadwal', 'App\Http\Controllers\GuruController@getJadwalGuru')->name('get_jadwal_guru');
+
     });
 
     Route::group(['prefix' => 'jadwal'], function(){
@@ -55,6 +58,8 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/edit', 'App\Http\Controllers\JadwalController@edit')->name('edit_jadwal');
         Route::get('/get', 'App\Http\Controllers\JadwalController@getAll')->name('get_jadwal');
         Route::post('/tambah', 'App\Http\Controllers\JadwalController@add')->name("tambah_jadwal");
+
+        Route::get('/getJadwalByKelas', 'App\Http\Controllers\JadwalController@getJadwalByKelas')->name('get_jadwal_kelas');
     });
 
     Route::group(['prefix' => 'jurusan'], function(){

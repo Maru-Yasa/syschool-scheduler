@@ -56,6 +56,20 @@ class JadwalController extends Controller
         ], 200); 
     }
 
+    public function getJadwalByKelas(Request $req)
+    {
+     
+        $id_kelas = $req->query('id_kelas');
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_kelas', $id_kelas)->get();
+        $jadwal_group = [];
+        foreach ($jadwal_raw as $key => $jadwal) {
+            $jadwal_group[$jadwal->id_kelas][] = $jadwal;
+        }
+
+        return response($jadwal_group);
+
+    }
+
     public function edit(Request $request)
     {
         

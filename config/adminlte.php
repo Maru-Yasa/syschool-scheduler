@@ -574,6 +574,26 @@ return [
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css',
                 ],
             ],        
+        ],
+        'TUI-Calendar' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/tui-calendar/1.9.1/tui-calendar.min.css'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '//uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/tui-calendar/1.9.1/tui-calendar.js'
+                ]
+            ]
         ]
     ],
 

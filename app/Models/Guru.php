@@ -12,4 +12,9 @@ class Guru extends Model
 
     protected $guarded = [];
 
+    public function jadwal()
+    {
+        return $this->hasMany('App\Models\Jadwal', 'id_guru');
+    }
+
 }
