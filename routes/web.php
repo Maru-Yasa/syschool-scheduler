@@ -107,5 +107,10 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/get', 'App\Http\Controllers\SemesterController@getAll')->name('get_semester');
         Route::post('/tambah', 'App\Http\Controllers\SemesterController@tambah')->name('tambah_semester');
     });
+    Route::group(['prefix' => 'admin'], function(){
+        Route::get('/settings', 'App\Http\Controllers\SettingAdminController@view');
+        Route::post('/ubahPassword', 'App\Http\Controllers\SettingAdminController@changepassword')->name('ubahPassword');
+        Route::get('/logout', 'App\Http\Controllers\SettingAdminController@logout')->name('logout');
+    });
 
 });
