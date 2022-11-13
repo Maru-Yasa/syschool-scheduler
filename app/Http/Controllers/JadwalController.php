@@ -55,7 +55,7 @@ class JadwalController extends Controller
         }
 
 
-        $between_number = [$req->jam_awal - 1, $req->jam_akhir - 1];
+        $between_number = [$req->jam_awal - 1, (int)$req->jam_akhir];
         $check_jadwal = [];
         if($req->jam_awal !== $req->jam_akhir){
             $check_jadwal = Jadwal::all()->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
@@ -67,7 +67,11 @@ class JadwalController extends Controller
             return response([
                 'status' => false,
                 'message' => 'Guru sudah ada jadwal',
-                'data' => ''
+                'data' => '',
+                'debug' => [
+                    'count' => $check_jadwal,
+                    'between' => $between_number
+                ],
             ]);
         }
         $data_to_submit = $req->all();
@@ -77,6 +81,10 @@ class JadwalController extends Controller
             'status' => true,
             'message' => "Sukses menambah data",
             'data' => $jadwal,
+            'debug' => [
+                'count' => $check_jadwal,
+                'between' => $between_number
+            ],
         ], 200); 
     }
 
@@ -137,12 +145,36 @@ class JadwalController extends Controller
 
             $jadwal = Jadwal::all()->where('id', $req->id)->first();
 
+            $between_number = [$req->jam_awal - 1, $req->jam_akhir];
+            $check_jadwal = [];
+            if($req->jam_awal !== $req->jam_akhir){
+                $check_jadwal = Jadwal::all()->where('id_hari', $req->id_hari)->whereNotIn('id',$req->id)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
+            }else{
+                $check_jadwal = Jadwal::all()->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
+            }
+    
+            if(count($check_jadwal) !== 0){
+                return response([
+                    'status' => false,
+                    'message' => 'Guru sudah ada jadwal',
+                    'data' => '',
+                    'debug' => [
+                        'count' => $check_jadwal,
+                        'between' => $between_number
+                    ],
+                ]);
+            }
+
             $jadwal->update($req->all());
 
             return response([
                 'status' => true,
                 'message' => "Data berhasil di edit",
-                'data' => $jadwal
+                'data' => $jadwal,
+                'debug' => [
+                    'count' => $check_jadwal,
+                    'between' => $between_number
+                ],
             ], 200);   
 
         } catch (\Throwable $th) {

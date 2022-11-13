@@ -522,6 +522,9 @@
                     contentType: false,
                     data: formData,
                     success: (res) => {
+                        console.log(res);
+                        $("select").removeClass('is-invalid')                        
+                        $("input").removeClass('is-invalid')                        
                         if(res.status){
                             $("#modal_edit_jadwal").modal('hide')
                             renderTable()
