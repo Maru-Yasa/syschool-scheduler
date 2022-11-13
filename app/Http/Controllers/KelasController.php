@@ -121,6 +121,12 @@ class KelasController extends Controller
         })->rawColumns(['aksi', 'jurusan'])->make(true);
     }
 
+    public function getById(Request $req)
+    {
+        $kelas = Kelas::all()->where('id', $req->id_kelas)->first();
+        return response($kelas);
+    }
+
     public function getAllByIdJurusan(Request $req)
     {
         $id_jurusan = $req->query('id_jurusan');

@@ -171,12 +171,10 @@
         })
     }
     $(document).ready(() => {
-        console.log("HI");
-
         $('#role_input').select2()
 
         $("#modalTambahMapel").on('shown.bs.modal', () => {
-            $("#formTambahMapel").off().one('submit',(e) => {
+            $("#formTambahMapel").off().on('submit',(e) => {
                 e.preventDefault()
                 console.log('submit');
                 const formData = new FormData($("#formTambahMapel")[0])

@@ -122,7 +122,6 @@
 
             // submit handler
             $("#button_edit_guru").off().on('click', (e) => {
-                console.log("submit");
                 const formData = new FormData($("#form_edit_guru")[0])
                 $.ajax({
                     type: 'post',

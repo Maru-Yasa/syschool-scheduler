@@ -119,7 +119,7 @@
 
         $("select").select2()
 
-        function create_table(id, data) {
+        function create_table(id, data, id_guru) {
             const container = document.getElementById('table-wrapper')
             const tbl = document.createElement('table')
             const thead = document.createElement('thead')
@@ -189,7 +189,11 @@
                 const elem = $(`#${id}-${obj.jam_awal}-${obj.hari.urut}`)
                 const selisih = obj.jam_akhir - obj.jam_awal + 1
                 elem.html(`${obj.mapel.nama_mapel} <br> ${obj.guru.nama}`)
-                elem.css('background-color', 'rgba(0,123,255, 0.1)')
+                if(obj.id_guru == id_guru){
+                    elem.css('background-color', 'rgba(0,123,255, 0.1)')
+                }else{
+                    elem.css('background-color', 'rgba(217, 83, 79, 0.1)	')
+                }
                 elem.addClass('text-center align-middle')
                 for (let i = 1; i < selisih; i++) {
                     $(`#${id}-${obj.jam_awal + i}-${obj.hari.urut}`).remove()  
@@ -200,6 +204,8 @@
         }
 
         $(document).ready(() => {
+            $.fn.select2.defaults.set("escapeMarkup", (text) => text)
+
             $("#preview_jadwal").DataTable({
                 'ordering': false,
                 'paging': false,
@@ -352,7 +358,7 @@
                         // res[parseInt(kelas_raw)]
                         kelas_raw.forEach((id_kelas) => {
                             const obj = res[parseInt(id_kelas)]
-                            create_table(`${id_kelas}`, obj)
+                            create_table(`${id_kelas}`, obj, $("select[name='id_guru']").val())
                         })
                     }
                 })
@@ -379,6 +385,7 @@
                             $(".validation").removeClass('is-invalid')
                             $(`.validation`).prop('hidden', true)   
                             $("#form_tambah_jadwal").trigger('reset')
+                            $("#table-wrapper").empty()
                         }else{
                             toastr.error(res.message)
                             $(".validation").removeClass('is-invalid')

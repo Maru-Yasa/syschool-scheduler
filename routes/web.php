@@ -60,6 +60,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/tambah', 'App\Http\Controllers\JadwalController@add')->name("tambah_jadwal");
 
         Route::get('/getJadwalByKelas', 'App\Http\Controllers\JadwalController@getJadwalByKelas')->name('get_jadwal_kelas');
+        Route::get('/getAllJadwal', 'App\Http\Controllers\JadwalController@getAllJadwal')->name('get_all_jadwal');
+        Route::get('/{id}', 'App\Http\Controllers\JadwalController@getJadwalById')->name('get_jadwal_by_id');
+
     });
 
     Route::group(['prefix' => 'jurusan'], function(){
@@ -84,6 +87,8 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/{id}/delete', 'App\Http\Controllers\KelasController@delete')->name('delete_kelas');
         Route::post('/edit', 'App\Http\Controllers\KelasController@edit')->name('edit_kelas');
         Route::get('/get', 'App\Http\Controllers\KelasController@getAll')->name('get_kelas');
+        Route::get('/getById', 'App\Http\Controllers\KelasController@getById')->name('get_kelas_by_id');
+        
         Route::post('/tambah', 'App\Http\Controllers\KelasController@tambah')->name('tambah_kelas');
     });
     Route::group(['prefix' => 'mapel'], function(){
