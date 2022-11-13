@@ -166,8 +166,15 @@ class GuruController extends Controller
             $jadwal_group[$jadwal->id_kelas][] = $jadwal;
         }
 
+        foreach ($jadwal_group as $key => $value) {
+            $id_kelas = $key;
+            $jadwal_by_kelas = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_kelas', $id_kelas)->whereNot('id_guru', $id_guru)->get();
+            foreach ($jadwal_by_kelas as $key => $jadwal) {
+                $jadwal_group[$jadwal->id_kelas][] = $jadwal;
+            }
+        }
+        
         return response($jadwal_group);
-
     }
 
 }
