@@ -146,6 +146,11 @@
 <x-script />
 <script>
 
+        function random_rgba() {
+            var o = Math.round, r = Math.random, s = 255;
+            return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + 0.2 + ')';
+        }
+
         function renderTable() {
             // get all jadwal
             $.ajax({
@@ -215,6 +220,10 @@
             data.reverse()
 
             // render data
+            let jam_jp = dayjs("07:15", "HH:mm")
+            const master_durasi_jp = "{{ $master_setting_jp['durasi_jp'] }}"
+            const jeda = JSON.parse('{!! json_encode($master_jeda) !!}')
+            let list_mulai_jeda = []
             for (let i = 1; i < setting_jp.jumlah_jp + 1; i++) {
                 const tr = document.createElement('tr')
                 tr.setAttribute('class', 'bg-white text-black text-canter')
@@ -222,25 +231,50 @@
 
                     // render JP
                     if(j === 0){
+                        let durasi_jp = master_durasi_jp
                         const td = tr.insertCell()
+                        let isIstirahat = false
+                        $(td).addClass("align-middle")
                         td.classList.add('text-center')
-                        td.appendChild(document.createTextNode(i))
+                        $(td).html(document.createTextNode(`${jam_jp.format('HH:mm')}`))
+                        jam_jp = jam_jp.add(parseInt(master_durasi_jp), 'm')
+
+                        jeda.forEach((jeda) => {
+                            if(i == jeda.mulai_jeda -1){
+                                isIstirahat = true
+                                jam_jp = jam_jp.add(parseInt(jeda.durasi_jeda), 'm')
+                            }
+                        })
+
+
                     }else{
+
                         const td = document.createElement('td')
+                        $(td).addClass("align-middle")
                         td.setAttribute('id', `${id}-${i}-${j}`)
+                        let y = i
+                        list_mulai_jeda.forEach((lst) => {
+                            if(lst <= i){
+                                y -= 1
+                                td.setAttribute('id', `${id}-${i - 1}-${j}`)
+                            }else{
+                                td.setAttribute('id', `${id}-${i}-${j}`)
+                            }
+                        })
                         td.classList.add('text-center')
                         td.classList.add('prop-wrapper')
                         td.classList.add('position-relative')
                         td.classList.add('p-2')
                         const prop = `
                         <div class="prop-center prop-hidden shadow-lg">
-                            <button data-hari=${j} data-id-kelas=${id_kelas} data-jp-awal=${i} class="btn btn-primary btn-sm mr-1" onclick="handleAdd(this)">
+                            <button data-hari=${j} data-id-kelas=${id_kelas} data-jp-awal=${y} class="btn btn-primary btn-sm mr-1" onclick="handleAdd(this)">
                                 <i class="bi bi-plus-circle-fill"></i>                    
                             </button>
                         </div>
                         `
                         td.innerHTML = `- ${prop}`
                         tr.appendChild(td)              
+
                     }
                 }
                 tbl.appendChild(tr)
@@ -250,7 +284,7 @@
             if (data !== []) {
                 data.forEach((obj) => {
                     const elem = $(`#${id}-${obj.jam_awal}-${obj.hari.urut}`)
-                    const selisih = obj.jam_akhir - obj.jam_awal + 1
+                    var selisih = obj.jam_akhir - obj.jam_awal + 1
                     const prop = `
                     <div class="prop-center prop-hidden shadow-lg">
                         <button data-id=${obj.id} class="btn button-edit-modal btn-primary btn-sm mr-1" onclick="handleEdit(this)">
@@ -261,8 +295,9 @@
                         </button>
                     </div>
                     `
-                    elem.html(`${obj.mapel.nama_mapel} <br> ${obj.guru.nama} ${prop}`)
-                    elem.css('background-color', `rgba(${warna},123,255, 0.1)`)
+                    const profileUrl = "{{ url('image/guru/') }}"
+                    elem.html(`<img src="${profileUrl+'/'+obj.guru.profile}" class="img-fluid rounded-circle my-2" style="object-fit: cover;width:64px;height:64px;" /> <br> ${obj.mapel.nama_mapel} <br> ${obj.guru.nama} ${prop}`)
+                    elem.css('background-color', random_rgba())
                     elem.addClass('text-center align-middle position-relative prop-wrapper')
                     for (let i = 1; i < selisih; i++) {
                         $(`#${id}-${obj.jam_awal + i}-${obj.hari.urut}`).remove()  
@@ -524,7 +559,8 @@
                     success: (res) => {
                         console.log(res);
                         $("select").removeClass('is-invalid')                        
-                        $("input").removeClass('is-invalid')                        
+                        $("input").removeClass('is-invalid')    
+                        $(".validation").removeClass('is-invalid')                    
                         if(res.status){
                             $("#modal_edit_jadwal").modal('hide')
                             renderTable()
@@ -581,6 +617,7 @@
         }
 
         $(document).ready(() => {
+            dayjs.extend(window.dayjs_plugin_customParseFormat);
 
             renderTable()
             $.fn.select2.defaults.set("escapeMarkup", (text) => text)

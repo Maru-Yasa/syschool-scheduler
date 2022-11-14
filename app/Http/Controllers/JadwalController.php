@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Hari;
 use App\Models\Jadwal;
 use App\Models\Kelas;
+use App\Models\SettingJeda;
 use App\Models\SettingJP;
 use App\Models\SettingUmum;
 use Illuminate\Http\Request;
@@ -18,9 +19,11 @@ class JadwalController extends Controller
     {
         $hari = Hari::orderBy('urut', 'ASC')->get();
         $setting_jp = SettingJP::all()->first();
+        $jeda = SettingJeda::all();
         return view('jadwal', $data=[
             'master_hari' => $hari,
-            'master_setting_jp' => $setting_jp
+            'master_setting_jp' => $setting_jp,
+            'master_jeda' => $jeda
         ]);
     }
 
@@ -55,12 +58,12 @@ class JadwalController extends Controller
         }
 
 
-        $between_number = [$req->jam_awal - 1, (int)$req->jam_akhir];
+        $between_number = [$req->jam_awal, (int)$req->jam_akhir];
         $check_jadwal = [];
         if($req->jam_awal !== $req->jam_akhir){
-            $check_jadwal = Jadwal::all()->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
+            $check_jadwal = Jadwal::all()->whereNotIn('id', $req->id)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
         }else{
-            $check_jadwal = Jadwal::all()->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
+            $check_jadwal = Jadwal::all()->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
         }
 
         if(count($check_jadwal) !== 0){
@@ -145,12 +148,12 @@ class JadwalController extends Controller
 
             $jadwal = Jadwal::all()->where('id', $req->id)->first();
 
-            $between_number = [$req->jam_awal - 1, $req->jam_akhir];
+            $between_number = [$req->jam_awal, $req->jam_akhir];
             $check_jadwal = [];
             if($req->jam_awal !== $req->jam_akhir){
-                $check_jadwal = Jadwal::all()->where('id_hari', $req->id_hari)->whereNotIn('id',$req->id)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
+                $check_jadwal = Jadwal::all()->whereNotIn('id', $req->id)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereNotIn('id',$req->id)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
             }else{
-                $check_jadwal = Jadwal::all()->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
+                $check_jadwal = Jadwal::all()->whereNotIn('id', $req->id)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
             }
     
             if(count($check_jadwal) !== 0){

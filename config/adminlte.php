@@ -521,23 +521,18 @@ return [
                 ],
             ],        
         ],
-        'TUI-Calendar' => [
+        'dayjs' => [
             'active' => true,
             'files' => [
                 [
-                    'type' => 'css',
+                    'type' => 'js',
                     'asset' => true,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/tui-calendar/1.9.1/tui-calendar.min.css'
+                    'location' => '//unpkg.com/dayjs@1.8.20/dayjs.min.js'
                 ],
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => '//uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js'
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/tui-calendar/1.9.1/tui-calendar.js'
+                    'location' => '//unpkg.com/dayjs@1.8.20/plugin/customParseFormat.js'
                 ]
             ]
         ]
