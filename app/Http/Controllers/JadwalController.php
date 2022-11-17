@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
 use App\Models\Hari;
 use App\Models\Jadwal;
 use App\Models\Jurusan;
@@ -268,10 +269,39 @@ class JadwalController extends Controller
             'master_kelas' => $kelas
         ];
         $view = view('cetak.jadwal', $data)->render();
-        // $pdf = SnappyPdf::loadHTML($view);
-        // $pdf->setOption('javascript-delay', 5000);      
         return view('cetak.jadwal', $data);
-        // return $pdf->inline();
+    }
+
+    public function cetakBerdasarkanGuru(Request $req)
+    {
+        $list_id_guru = Guru::all(['id']);
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->get();
+        $jadwal_group = [];
+        foreach ($list_id_guru as $key => $guru) {
+            $jadwal_group[$guru->id] = [];
+        }
+
+        foreach ($jadwal_raw as $key => $jadwal) {
+            $jadwal_group[$jadwal->id_guru][] = $jadwal;
+        }
+
+        $hari = Hari::orderBy('urut', 'ASC')->get();
+        $setting_jp = SettingJP::all()->first();
+        $jeda = SettingJeda::all();
+        $guru_raw = Guru::all();
+        $guru = [];
+        foreach ($guru_raw as $key => $value) {
+            $guru[$value->id] = $value;
+        }
+        $data=[
+            'master_hari' => $hari,
+            'master_setting_jp' => $setting_jp,
+            'master_jeda' => $jeda,
+            'master_jadwal' => $jadwal_group,
+            'master_guru' => $guru
+        ];
+        $view = view('cetak.jadwal_guru', $data);
+        return $view;
     }
 
     // public function previewJadwalForGuru(Request $req)

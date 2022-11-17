@@ -685,7 +685,8 @@
         }
 
         function printDiv(source) {
-            let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
+            console.log(`${window.location.origin}/cetak/semuaJadwal`);
+            let mywindow = window.open(`${window.location.origin}/cetak/semuaJadwal`, 'PRINT', 'height=650,width=900,top=100,left=150');
             mywindow.document.write(source);
             mywindow.document.close(); // necessary for IE >= 10
             mywindow.focus(); // necessary for IE >= 10*/
@@ -725,6 +726,14 @@
             $("#print_semua_jadwal").on('click', (e) => {
                 e.preventDefault()
                 $("#iframe").prop('src', "{{ route('cetak_semua_jadwal') }}")
+                $("#iframe").on('load', () => {
+                    printDiv(document.getElementById('iframe').contentDocument.querySelectorAll('body')[0].innerHTML)                    
+                })
+            })
+
+            $("#print_jadwal_guru").on('click', (e) => {
+                e.preventDefault()
+                $("#iframe").prop('src', "{{ route('cetak_berdasarkan_guru') }}")
                 $("#iframe").on('load', () => {
                     printDiv(document.getElementById('iframe').contentDocument.querySelectorAll('body')[0].innerHTML)                    
                 })

@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function(){
     
     Route::group(['prefix' => 'cetak'], function(){
         Route::get('/semuaJadwal', 'App\Http\Controllers\JadwalController@cetak')->name('cetak_semua_jadwal');
+        Route::get('/cetakBerdasarkanGuru', 'App\Http\Controllers\JadwalController@cetakBerdasarkanGuru')->name('cetak_berdasarkan_guru');
     });
 
     Route::group(['prefix' => 'setting_umum'], function(){

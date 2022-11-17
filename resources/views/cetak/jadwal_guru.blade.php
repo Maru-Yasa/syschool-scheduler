@@ -30,8 +30,8 @@
     
     <div class="">
         <ul id="atas">
-            @foreach ($master_kelas as $kelas)
-                <li> <a href="#table_preview_{{ $kelas->id }}-table-jadwal">{{ $kelas->nama_kelas }}</a> </li>
+            @foreach ($master_guru as $guru)
+                <li> <a href="#table_preview_{{ $guru->id }}-table-jadwal">{{ $guru->nama }}</a> </li>
             @endforeach
         </ul>
     </div>
@@ -55,7 +55,7 @@
 
 
 <script>
-    function create_table(id, data, nama_kelas, id_kelas) {
+    function create_table(id, data, nama_kelas, id_guru) {
         const container = document.getElementById('table-wrapper')
         const tbl = document.createElement('table')
         const thead = document.createElement('thead')
@@ -176,7 +176,7 @@
                 const elem = $(`#${id}-${obj.jam_awal}-${obj.hari.urut}`)
                 var selisih = obj.jam_akhir - obj.jam_awal + 1
                 const profileUrl = "{{ url('image/guru/') }}"
-                elem.html(`${obj.mapel.nama_mapel} <br> "${obj.guru.nama}" <br> ${obj.ruang_kelas.nama}`)
+                elem.html(`${obj.kelas.nama_kelas} <br> ${obj.mapel.nama_mapel} <br> ${obj.ruang_kelas.nama}`)
                 elem.addClass('text-center align-middle position-relative')
                 for (let i = 1; i < selisih; i++) {
                     $(`#${id}-${obj.jam_awal + i}-${obj.hari.urut}`).remove()  
@@ -188,15 +188,15 @@
 
     }
 
-    function renderTable(jadwal, master_kelas) {
+    function renderTable(jadwal, master_guru) {
         
         $('#table-wrapper').empty()
         const kelas_raw = Object.keys(jadwal)
         for (let i = 0; i < kelas_raw.length; i++) {
-            const id_kelas = kelas_raw[i];
-            const obj = jadwal[id_kelas];
-            const self_kelas = master_kelas[id_kelas]
-            create_table(`${id_kelas}-table-jadwal`, obj, self_kelas.nama_kelas, id_kelas);
+            const id_guru = kelas_raw[i];
+            const obj = jadwal[id_guru];
+            const self_kelas = master_guru[id_guru]
+            create_table(`${id_guru}-table-jadwal`, obj, self_kelas.nama, id_guru);
             
         }
 
@@ -204,9 +204,9 @@
     dayjs.extend(window.dayjs_plugin_customParseFormat);
     console.log('hellow world');
     const allJadwal =  @json($master_jadwal);
-    const master_kelas = @json($master_kelas);
+    const master_guru = @json($master_guru);
 
-    renderTable(allJadwal, master_kelas)
+    renderTable(allJadwal, master_guru)
 
     $(document).ready(() => {
 
