@@ -119,3 +119,9 @@ Route::group(['middleware' => 'auth'], function(){
     });
 
 });
+
+    Route::group(['prefix' => 'indexPage'], function(){
+        Route::get('/jurusan', 'App\Http\Controllers\indexController@jurusan');
+        Route::get('/kelas/{id}', 'App\Http\Controllers\indexController@kelas');
+        Route::get('/jadwal/{id}', 'App\Http\Controllers\indexController@jadwal');
+    });

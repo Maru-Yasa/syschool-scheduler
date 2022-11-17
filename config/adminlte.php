@@ -397,7 +397,7 @@ return [
         [
             'text' => 'Logout',
             'url'  => 'admin/logout',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-sign-out-alt',
         ],
     ],
 
