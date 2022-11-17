@@ -43,7 +43,8 @@ class DatabaseSeeder extends Seeder
         if (count(SettingJP::all()) == 0) {
             SettingJP::create([
                 'jumlah_jp' => 10,
-                'durasi_jp' => 45
+                'durasi_jp' => 45,
+                'mulai_jp' => '07:15'
             ]);
         }
 

@@ -22,6 +22,10 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => 'auth'], function(){
+    
+    Route::group(['prefix' => 'cetak'], function(){
+        Route::get('/semuaJadwal', 'App\Http\Controllers\JadwalController@cetak')->name('cetak_semua_jadwal');
+    });
 
     Route::group(['prefix' => 'setting_umum'], function(){
         Route::post('/edit', 'App\Http\Controllers\SettingUmumController@edit')->name('edit_setting_umum');
@@ -61,8 +65,10 @@ Route::group(['middleware' => 'auth'], function(){
 
         Route::get('/getJadwalByKelas', 'App\Http\Controllers\JadwalController@getJadwalByKelas')->name('get_jadwal_kelas');
         Route::get('/getAllJadwal', 'App\Http\Controllers\JadwalController@getAllJadwal')->name('get_all_jadwal');
-        Route::get('/{id}', 'App\Http\Controllers\JadwalController@getJadwalById')->name('get_jadwal_by_id');
+        Route::get('/getById/{id}', 'App\Http\Controllers\JadwalController@getJadwalById')->name('get_jadwal_by_id');
 
+        Route::get('/getJadwalByIdJurusan', 'App\Http\Controllers\JadwalController@getJadwalByIdJurusan')->name('get_jadwal_by_id_jurusan');
+        
     });
 
     Route::group(['prefix' => 'jurusan'], function(){

@@ -1,5 +1,6 @@
 <?php
 
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -195,7 +196,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-
+        Barryvdh\Snappy\ServiceProvider::class,
 
     ],
 
@@ -212,6 +213,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'PDF' => SnappyPdf::class
     ])->toArray(),
 
 ];
