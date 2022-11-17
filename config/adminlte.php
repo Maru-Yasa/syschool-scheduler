@@ -535,6 +535,31 @@ return [
                     'location' => '//unpkg.com/dayjs@1.8.20/plugin/customParseFormat.js'
                 ]
             ]
+        ],
+        'jquery-clock-timepicker' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '//cdn.jsdelivr.net/npm/jquery-clock-timepicker@2.6.3/jquery-clock-timepicker.min.js'
+                ]
+            ]
+        ],
+        'jsPDF' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '//unpkg.com/jspdf@latest/dist/jspdf.umd.min.js'
+                ]
+            ]
         ]
     ],
 

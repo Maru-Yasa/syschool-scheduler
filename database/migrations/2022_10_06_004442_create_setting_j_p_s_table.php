@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('setting_jp', function (Blueprint $table) {
             $table->id();
+            $table->string('mulai_jp');
             $table->integer('jumlah_jp');
             $table->integer('durasi_jp');
             $table->timestamps();

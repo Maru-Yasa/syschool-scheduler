@@ -28,8 +28,12 @@ class RuangKelasController extends Controller
         })->addColumn('ruang_kelas', function($row){
             return $row->nama;
         })->addColumn('owner', function($row){
-            $owner = Jurusan::all()->where('id', $row->owner)->first();
-            return $owner->nama_jurusan;
+            if($row->owner === '-'){
+                return '-';
+            }else{
+                $owner = Jurusan::all()->where('id', $row->owner)->first();
+                return $owner->nama_jurusan;
+            }
         })->rawColumns(['aksi', 'ruang_kelas', 'owner'])->make(true);
     }
     public function tambah(Request $req)
@@ -37,7 +41,6 @@ class RuangKelasController extends Controller
         try {
             $validator = Validator::make($req->all(), [
                 'nama' => 'required',
-                'owner' => 'required'
             ]);
 
             if($validator->fails()){
@@ -46,6 +49,17 @@ class RuangKelasController extends Controller
                     "messages" => $validator->errors(),
                     "message" => "Terjadi galat, mohon cek lagi"
                 ], 200);
+            }
+
+            if(!$req->owner){
+                $data = $req->except('_token');
+                $data['owner'] = '-';
+                $newData = RuangKelas::create($data);
+                return response([
+                    'status' => true,
+                    'message' => "Sukses menambah data",
+                    'data' => $newData
+                ], 200);                  
             }
 
             $data = $req->except('_token');

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
 use App\Models\Hari;
 use App\Models\Jadwal;
+use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\SettingJeda;
 use App\Models\SettingJP;
 use App\Models\SettingUmum;
+use Barryvdh\DomPDF\PDF;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PDO;
@@ -20,10 +24,12 @@ class JadwalController extends Controller
         $hari = Hari::orderBy('urut', 'ASC')->get();
         $setting_jp = SettingJP::all()->first();
         $jeda = SettingJeda::all();
+        $jurusan = Jurusan::all();
         return view('jadwal', $data=[
             'master_hari' => $hari,
             'master_setting_jp' => $setting_jp,
-            'master_jeda' => $jeda
+            'master_jeda' => $jeda,
+            'master_jurusan' => $jurusan
         ]);
     }
 
@@ -128,6 +134,31 @@ class JadwalController extends Controller
         return response($jadwal);
     
     }
+
+    public function getJadwalByIdJurusan(Request $req)
+    {
+        if(!$req->id_jurusan){
+            return response([
+                
+            ]);
+        }
+
+        $kelas_id_only = Kelas::where('id_jurusan', (int)$req->id_jurusan)->get(['id']);
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->get();
+        $jadwal_group = [];
+        foreach ($kelas_id_only as $key => $value) {
+            $jadwal_group[$value->id] = [];
+        }
+
+        foreach ($jadwal_raw as $key => $jadwal) {
+            if($jadwal->kelas->id_jurusan == $req->id_jurusan){
+                $jadwal_group[$jadwal->id_kelas][] = $jadwal;
+            }
+        }
+
+        return response($jadwal_group);
+    }
+
     public function edit(Request $req)
     {
         try {
@@ -206,6 +237,71 @@ class JadwalController extends Controller
                 'data' => []
             ], 200);         
         }
+    }
+
+    public function cetak(Request $req)
+    {
+
+        $kelas_id_only = Kelas::all(['id']);
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->get();
+        $jadwal_group = [];
+        foreach ($kelas_id_only as $key => $value) {
+            $jadwal_group[$value->id] = [];
+        }
+
+        foreach ($jadwal_raw as $key => $jadwal) {
+            $jadwal_group[$jadwal->id_kelas][] = $jadwal;
+        }
+
+        $hari = Hari::orderBy('urut', 'ASC')->get();
+        $setting_jp = SettingJP::all()->first();
+        $jeda = SettingJeda::all();
+        $kelas_raw = Kelas::all();
+        $kelas = [];
+        foreach ($kelas_raw as $key => $value) {
+            $kelas[$value->id] = $value;
+        }
+        $data=[
+            'master_hari' => $hari,
+            'master_setting_jp' => $setting_jp,
+            'master_jeda' => $jeda,
+            'master_jadwal' => $jadwal_group,
+            'master_kelas' => $kelas
+        ];
+        $view = view('cetak.jadwal', $data)->render();
+        return view('cetak.jadwal', $data);
+    }
+
+    public function cetakBerdasarkanGuru(Request $req)
+    {
+        $list_id_guru = Guru::all(['id']);
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->get();
+        $jadwal_group = [];
+        foreach ($list_id_guru as $key => $guru) {
+            $jadwal_group[$guru->id] = [];
+        }
+
+        foreach ($jadwal_raw as $key => $jadwal) {
+            $jadwal_group[$jadwal->id_guru][] = $jadwal;
+        }
+
+        $hari = Hari::orderBy('urut', 'ASC')->get();
+        $setting_jp = SettingJP::all()->first();
+        $jeda = SettingJeda::all();
+        $guru_raw = Guru::all();
+        $guru = [];
+        foreach ($guru_raw as $key => $value) {
+            $guru[$value->id] = $value;
+        }
+        $data=[
+            'master_hari' => $hari,
+            'master_setting_jp' => $setting_jp,
+            'master_jeda' => $jeda,
+            'master_jadwal' => $jadwal_group,
+            'master_guru' => $guru
+        ];
+        $view = view('cetak.jadwal_guru', $data);
+        return $view;
     }
 
     // public function previewJadwalForGuru(Request $req)

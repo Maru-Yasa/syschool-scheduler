@@ -177,6 +177,14 @@
                     <div class="card-body">
                         <form action="" id="edit_setting_jp">
                             @csrf
+                            <div class="mb-3 d-flex flex-column">
+                                <label for="">Mulai Jam Pembelajaran:</label>
+                                <input type="text" name="mulai_jp" class="form-control" placeholder="00:00">
+                                <small class="form-text text-muted">Mulainya jam pembelajaran</small>
+                                <div hidden id="validation_mulai_jp" class="text-danger validation">
+
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label for="">Jumlah Jam Pembelajaran:</label>
                                 <input type="number" name="jumlah_jp" class="form-control" placeholder="Jumlah jam pelajaran">
@@ -334,6 +342,7 @@
                 if(res.data != null || res.data != undefined){
 
                     $('input[name=jumlah_jp]').val(res.data.jumlah_jp)
+                    $('input[name=mulai_jp]').val(res.data.mulai_jp)
                     $('input[name=durasi_jp]').val(res.data.durasi_jp)
                     $('#id_setting_jp').val(res.data.id)
 
@@ -442,6 +451,7 @@
     })
 
     $(document).ready(() => {
+        $("input[name=mulai_jp]").clockTimePicker();
 
         $.ajax({
             type: 'get',

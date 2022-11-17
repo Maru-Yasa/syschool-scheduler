@@ -6,6 +6,25 @@
 
 @section('content')
 
+{{-- modal print --}}
+<div class="modal fade" id="modal_print_jadwal" role="dialog" aria-labelledby="modal_edit_jadwal" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Preview</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>        
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
 {{-- modal edit jadwal --}}
 <div class="modal fade" id="modal_edit_jadwal" tabindex="-1" role="dialog" aria-labelledby="modal_edit_jadwal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -136,9 +155,27 @@
     </div>
 </div>
 
+<div class="bg-white w-100 rounded border p-4 mb-3">
+    <div class="d-flex">
+        <button id="print_semua_jadwal" class="btn btn-primary mr-3"><i class="bi bi-printer-fill"></i> Print semua jadwal</button>
+        <button id="print_jadwal_guru" class="btn btn-success"><i class="bi bi-printer-fill"></i> Print semua jadwal berdasarkan guru</button>
+    </div>
+</div>
+
 <div class="bg-white w-100 rounded border p-4">
+    <div class="d-flex flex-column mb-3">
+        <label for="">Filter Jadwal: </label>
+        <select id="filter_jadwal" class="" name="filter_jadwal" id="">
+            <option value="semua">Semua Jurusan</option>
+            @foreach ($master_jurusan as $jurusan)
+                <option value="{{ $jurusan->id }}">{{ $jurusan->nama_jurusan }}</option>
+            @endforeach
+        </select>
+    </div>
     <div class="" id="table-wrapper"></div>
 </div>
+<iframe id='iframe' src="" class="w-100 d-none" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+
 
 @endsection
 
@@ -151,27 +188,58 @@
             return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + 0.2 + ')';
         }
 
-        function renderTable() {
-            // get all jadwal
-            $.ajax({
-                url: "{{ route('get_all_jadwal') }}",
-                type: 'get',
-                success: (res) => {
-                    const kelas_raw = Object.keys(res)
-                    $("#table-wrapper").empty()
-                    kelas_raw.forEach((id_kelas) => {
-                        const obj = res[id_kelas]
-                        const kelas_url = "{{ route('get_kelas_by_id') }}"
-                        $.ajax({
-                            type: 'get',
-                            url: `${kelas_url}?id_kelas=${id_kelas}`,
-                            success: (res) => {
-                                create_table(`${id_kelas}-table-jadwal`, obj, res.nama_kelas, id_kelas)
-                            }
-                        })
-                    })
+        function generatePdf(source) {
+            const doc = new jspdf.jsPDF("p", "pt", "A4");
+            // doc.html(source).then(() => doc.save('test.pdf'))
+            doc.html(source, {
+                html2canvas: {
+                    scale: 1
+                },
+                callback: function () {
+                    window.open(doc.output('bloburl'));
                 }
-            })
+            });
+
+
+        }
+
+        function renderTable(customData=null) {
+            // get all jadwal
+            if(customData !== null){
+                const kelas_raw = Object.keys(customData)
+                $("#table-wrapper").empty()
+                kelas_raw.forEach((id_kelas) => {
+                    const obj = customData[id_kelas]
+                    const kelas_url = "{{ route('get_kelas_by_id') }}"
+                    $.ajax({
+                        type: 'get',
+                        url: `${kelas_url}?id_kelas=${id_kelas}`,
+                        success: (res) => {
+                            create_table(`${id_kelas}-table-jadwal`, obj, res.nama_kelas, id_kelas)
+                        }
+                    })
+                })
+            }else{
+                $.ajax({
+                    url: "{{ route('get_all_jadwal') }}",
+                    type: 'get',
+                    success: (res) => {
+                        const kelas_raw = Object.keys(res)
+                        $("#table-wrapper").empty()
+                            kelas_raw.forEach((id_kelas) => {
+                            const obj = res[id_kelas]
+                            const kelas_url = "{{ route('get_kelas_by_id') }}"
+                            $.ajax({
+                                type: 'get',
+                                url: `${kelas_url}?id_kelas=${id_kelas}`,
+                                success: (res) => {
+                                    create_table(`${id_kelas}-table-jadwal`, obj, res.nama_kelas, id_kelas)
+                                }
+                            })
+                        })
+                    }
+                })
+            }
         }
 
         function create_table(id, data, nama_kelas, id_kelas) {
@@ -220,7 +288,7 @@
             data.reverse()
 
             // render data
-            let jam_jp = dayjs("07:15", "HH:mm")
+            let jam_jp = dayjs("{{ $master_setting_jp['mulai_jp'] }}", "HH:mm")
             const master_durasi_jp = "{{ $master_setting_jp['durasi_jp'] }}"
             const jeda = JSON.parse('{!! json_encode($master_jeda) !!}')
             let list_mulai_jeda = []
@@ -313,7 +381,7 @@
         function handleAdd(e) {
             const target = $(e)
             const id_jadwal = target.attr('data-id')
-            const url_ajax = `{{ url('jadwal/${id_jadwal}') }}`
+            const url_ajax = `{{ url('jadwal/getById/${id_jadwal}') }}`
 
             // initialize data
             $.ajax({
@@ -460,7 +528,7 @@
         function handleEdit(e) {
             const target = $(e)
             const id_jadwal = target.attr('data-id')
-            const url_ajax = `{{ url('jadwal/${id_jadwal}') }}`
+            const url_ajax = `{{ url('jadwal/getById/${id_jadwal}') }}`
 
             // initialize data
             $.ajax({
@@ -616,11 +684,60 @@
             })
         }
 
+        function printDiv(source) {
+            console.log(`${window.location.origin}/cetak/semuaJadwal`);
+            let mywindow = window.open(`${window.location.origin}/cetak/semuaJadwal`, 'PRINT', 'height=650,width=900,top=100,left=150');
+            mywindow.document.write(source);
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
+
         $(document).ready(() => {
+            window.html2canvas = html2canvas;
+            $('select').select2()
             dayjs.extend(window.dayjs_plugin_customParseFormat);
 
             renderTable()
             $.fn.select2.defaults.set("escapeMarkup", (text) => text)
+
+            $('#filter_jadwal').on('select2:select', (e) => {
+                const id_jurusan = e.target.value
+
+                if(id_jurusan == 'semua'){
+                    renderTable()
+                }else{
+                    let url = `{{ route('get_jadwal_by_id_jurusan') }}`
+                    $.ajax({
+                        url: `${url}?id_jurusan=${id_jurusan}`,
+                        method: 'get',
+                        success: (res) => {
+                            renderTable(res)
+                        }
+                    })
+                }
+
+            })
+
+            $("#print_semua_jadwal").on('click', (e) => {
+                e.preventDefault()
+                $("#iframe").prop('src', "{{ route('cetak_semua_jadwal') }}")
+                $("#iframe").on('load', () => {
+                    printDiv(document.getElementById('iframe').contentDocument.querySelectorAll('body')[0].innerHTML)                    
+                })
+            })
+
+            $("#print_jadwal_guru").on('click', (e) => {
+                e.preventDefault()
+                $("#iframe").prop('src', "{{ route('cetak_berdasarkan_guru') }}")
+                $("#iframe").on('load', () => {
+                    printDiv(document.getElementById('iframe').contentDocument.querySelectorAll('body')[0].innerHTML)                    
+                })
+            })
 
         })
 
