@@ -78,7 +78,7 @@
         <div class="">
             <div class="d-flex flex-wrap align-items-center justify-content-center mt-4 w-100 h-100">
                 @foreach ($jurusan as $item)
-                    <a href="/indexPage/kelas/{{ $item->id }}" class="text-decoration-none text-dark zoom">
+                    <a href="{{ route('lihat_kelas',  $item->id) }}" class="text-decoration-none text-dark zoom">
                         <div class="px-3 justify-content-center mt-3">
                             <div class="card p-3 shadow text-center mx-0"
                                 style="background-color:#ffffff9c;width: 7rem;height: 7rem;">

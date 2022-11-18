@@ -17,10 +17,10 @@ class IndexController extends Controller
     public function kelas($id)
     {
         $kelas = Kelas::all()->where('id_jurusan', $id);
-       return view('kelasPage', ['kelas' => $kelas]);
+       return view('kelasPage', ['kelas' => $kelas, 'id_jurusan' => $id]);
     }
     public function jadwal($id)
     {
-       return view('jadwalPage');
+       return view('jadwalPage', ['id_jurusan' => $id]);
     }
 }

@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
@@ -127,8 +127,8 @@ Route::group(['middleware' => 'auth'], function(){
 
 });
 
-    Route::group(['prefix' => 'indexPage'], function(){
-        Route::get('/jurusan', 'App\Http\Controllers\indexController@jurusan');
-        Route::get('/kelas/{id}', 'App\Http\Controllers\indexController@kelas');
-        Route::get('/jadwal/{id}', 'App\Http\Controllers\indexController@jadwal');
+    Route::group(['prefix' => '/'], function(){
+        Route::get('/', 'App\Http\Controllers\indexController@jurusan')->name('lihat_jurusan');
+        Route::get('/preview/kelas/{id}', 'App\Http\Controllers\indexController@kelas')->name('lihat_kelas');
+        Route::get('/preview/jadwal/{id}', 'App\Http\Controllers\indexController@jadwal')->name('lihat_jadwal');
     });

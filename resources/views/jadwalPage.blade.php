@@ -79,7 +79,7 @@
                 Jadwal Pelajaran Disini
             </div>
             <div class="text-center mt-5">
-                <a href="/indexPage/jurusan" class="h1" style="text-decoration-nonr;"><i class="bi bi-arrow-left-circle-fill"></i></a>
+                <a href="{{ route('lihat_kelas', $id_jurusan) }}" class="h1" style="text-decoration-nonr;"><i class="bi bi-arrow-left-circle-fill"></i></a>
             </div>
         </div>
     </div>
