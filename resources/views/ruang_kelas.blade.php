@@ -29,6 +29,7 @@
                 <label for="">Jurusan: </label>
                 <select type="text" name="owner" placeholder="Jurusan kelas" class="form-control">
                     <option value="" disabled selected>-- Pilih Jurusan --</option>
+                    <option value="-">-</option>
                 </select>
                 <div hidden id="validation_owner" class="text-danger validation">
 

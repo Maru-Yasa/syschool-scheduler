@@ -601,7 +601,7 @@
             })
         })
 
-        // initialize data
+        // initialize data setting umum
         $('select').select2()
 
         $.ajax({
@@ -611,6 +611,7 @@
                 if(res.data != null || res.data != undefined){
                     $("input[name=nama_sekolah]").val(res.data.nama_sekolah)
                     $("select[name=tingkat]").val(res.data.tingkat).trigger('change')
+                    $("select[name=id_semester]").val(res.data.id_semester).trigger('change')
                     $("textarea[name=alamat]").val(res.data.alamat)
                     $("input[name=id]").val(res.data.id)
                     $("#preview_logo").prop('src', `image/logo/${res.data.logo}`)

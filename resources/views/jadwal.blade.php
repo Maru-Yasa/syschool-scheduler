@@ -364,7 +364,7 @@
                     </div>
                     `
                     const profileUrl = "{{ url('image/guru/') }}"
-                    elem.html(`<img src="${profileUrl+'/'+obj.guru.profile}" class="img-fluid rounded-circle my-2" style="object-fit: cover;width:64px;height:64px;" /> <br> ${obj.mapel.nama_mapel} <br> ${obj.guru.nama} ${prop}`)
+                    elem.html(`<img src="${profileUrl+'/'+obj.guru.profile}" class="img-fluid rounded-circle my-2" style="object-fit: cover;width:64px;height:64px;" /> <br> ${obj.mapel.nama_mapel} <br> ${obj.guru.nama} ${prop} <br> ${obj.ruang_kelas.nama}`)
                     elem.css('background-color', random_rgba())
                     elem.addClass('text-center align-middle position-relative prop-wrapper')
                     for (let i = 1; i < selisih; i++) {
@@ -663,8 +663,7 @@
                 showConfirmButton: true,
                 confirmButtonText: "Ya, hapus",
                 cancelButtonText: "tidak",
-                confirmButtonColor: '#ff4444',
-                iconColor: '#ff4444',
+                confirmButtonColor: '#ff4444', 
             }).then((e) => {
                 if(e.isConfirmed){
                     $.ajax({

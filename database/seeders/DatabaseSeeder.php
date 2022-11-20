@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Hari;
+use App\Models\Semester;
 use App\Models\SettingJP;
 use App\Models\SettingUmum;
 use App\Models\User;

@@ -51,7 +51,7 @@ class RuangKelasController extends Controller
                 ], 200);
             }
 
-            if(!$req->owner){
+            if(!$req->owner || !$req->owner === '-'){
                 $data = $req->except('_token');
                 $data['owner'] = '-';
                 $newData = RuangKelas::create($data);

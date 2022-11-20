@@ -7,6 +7,7 @@ use App\Models\Hari;
 use App\Models\Jadwal;
 use App\Models\Jurusan;
 use App\Models\Kelas;
+use App\Models\RuangKelas;
 use App\Models\SettingJeda;
 use App\Models\SettingJP;
 use App\Models\SettingUmum;
@@ -18,6 +19,12 @@ use PDO;
 
 class JadwalController extends Controller
 {
+    protected $id_semester;
+
+    public function __construct()
+    {
+        $this->id_semester  = SettingUmum::all()->first()->id_semester;
+    }
 
     public function view(Request $request)
     {
@@ -64,25 +71,48 @@ class JadwalController extends Controller
         }
 
 
+        // validate guru, apakah sudah mengajar atau belum
         $between_number = [$req->jam_awal, (int)$req->jam_akhir];
-        $check_jadwal = [];
+        $check_jadwal_guru = [];
         if($req->jam_awal !== $req->jam_akhir){
-            $check_jadwal = Jadwal::all()->whereNotIn('id', $req->id)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
+            $check_jadwal_guru = Jadwal::all()->where('id_semester', $this->id_semester)->whereNotIn('id', $req->id)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
         }else{
-            $check_jadwal = Jadwal::all()->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
+            $check_jadwal_guru = Jadwal::all()->where('id_semester', $this->id_semester)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
         }
 
-        if(count($check_jadwal) !== 0){
+        if(count($check_jadwal_guru) !== 0){
             return response([
                 'status' => false,
-                'message' => 'Guru sudah ada jadwal',
+                'message' => 'Guru sudah ada jam',
                 'data' => '',
                 'debug' => [
-                    'count' => $check_jadwal,
+                    'count' => $check_jadwal_guru,
                     'between' => $between_number
                 ],
             ]);
         }
+
+        // validate ruang kelas, apakah sudah ditempati atau belum
+        $check_jadwal_ruang = [];
+        if($req->jam_awal !== $req->jam_akhir){
+            $check_jadwal_ruang = Jadwal::all()->where('id_semester', $this->id_semester)->whereNotIn('id', $req->id)->where('id_ruang_kelas', $req->id_ruang_kelas)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
+        }else{
+            $check_jadwal_ruang = Jadwal::all()->where('id_semester', $this->id_semester)->where('id_ruang_kelas', $req->id_ruang_kelas)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
+        }
+
+        if(count($check_jadwal_ruang) !== 0){
+            return response([
+                'status' => false,
+                'message' => 'Ruang kelas sudah dipakai',
+                'data' => '',
+                'debug' => [
+                    'count' => $check_jadwal_ruang,
+                    'between' => $between_number
+                ],
+            ]);
+        }
+
+
         $data_to_submit = $req->all();
         $data_to_submit['id_semester'] = SettingUmum::all()[0]->id_semester;
         $jadwal = Jadwal::create($data_to_submit);
@@ -91,7 +121,7 @@ class JadwalController extends Controller
             'message' => "Sukses menambah data",
             'data' => $jadwal,
             'debug' => [
-                'count' => $check_jadwal,
+                'count' => $check_jadwal_ruang,
                 'between' => $between_number
             ],
         ], 200); 
@@ -99,9 +129,8 @@ class JadwalController extends Controller
 
     public function getJadwalByKelas(Request $req)
     {
-     
         $id_kelas = $req->query('id_kelas');
-        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_kelas', $id_kelas)->get();
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_kelas', $id_kelas)->where('id_semester', $this->id_semester)->get();
         $jadwal_group = [];
         foreach ($jadwal_raw as $key => $jadwal) {
             $jadwal_group[$jadwal->id_kelas][] = $jadwal;
@@ -114,7 +143,7 @@ class JadwalController extends Controller
     public function getAllJadwal(Request $req)
     {
         $kelas_id_only = Kelas::all(['id']);
-        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->get();
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_semester', $this->id_semester)->get();
         $jadwal_group = [];
         foreach ($kelas_id_only as $key => $value) {
             $jadwal_group[$value->id] = [];
@@ -142,9 +171,8 @@ class JadwalController extends Controller
                 
             ]);
         }
-
         $kelas_id_only = Kelas::where('id_jurusan', (int)$req->id_jurusan)->get(['id']);
-        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->get();
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_semester', $this->id_semester)->get();
         $jadwal_group = [];
         foreach ($kelas_id_only as $key => $value) {
             $jadwal_group[$value->id] = [];
@@ -178,22 +206,43 @@ class JadwalController extends Controller
             }
 
             $jadwal = Jadwal::all()->where('id', $req->id)->first();
-
-            $between_number = [$req->jam_awal, $req->jam_akhir];
-            $check_jadwal = [];
+            
+            // validate guru, apakah sudah mengajar atau belum
+            $between_number = [$req->jam_awal, (int)$req->jam_akhir];
+            $check_jadwal_guru = [];
             if($req->jam_awal !== $req->jam_akhir){
-                $check_jadwal = Jadwal::all()->whereNotIn('id', $req->id)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereNotIn('id',$req->id)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
+                $check_jadwal_guru = Jadwal::all()->where('id_semester', $this->id_semester)->whereNotIn('id', $req->id)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
             }else{
-                $check_jadwal = Jadwal::all()->whereNotIn('id', $req->id)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
+                $check_jadwal_guru = Jadwal::all()->where('id_semester', $this->id_semester)->where('id_guru', $req->id_guru)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
             }
     
-            if(count($check_jadwal) !== 0){
+            if(count($check_jadwal_guru) !== 0){
                 return response([
                     'status' => false,
-                    'message' => 'Guru sudah ada jadwal',
+                    'message' => 'Guru sudah ada jam',
                     'data' => '',
                     'debug' => [
-                        'count' => $check_jadwal,
+                        'count' => $check_jadwal_guru,
+                        'between' => $between_number
+                    ],
+                ]);
+            }
+    
+            // validate ruang kelas, apakah sudah ditempati atau belum
+            $check_jadwal_ruang = [];
+            if($req->jam_awal !== $req->jam_akhir){
+                $check_jadwal_ruang = Jadwal::all()->where('id_semester', $this->id_semester)->whereNotIn('id', $req->id)->where('id_ruang_kelas', $req->id_ruang_kelas)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number)->whereBetween('jam_akhir', $between_number);
+            }else{
+                $check_jadwal_ruang = Jadwal::all()->where('id_semester', $this->id_semester)->where('id_ruang_kelas', $req->id_ruang_kelas)->where('id_hari', $req->id_hari)->whereBetween('jam_awal', $between_number);
+            }
+    
+            if(count($check_jadwal_ruang) !== 0){
+                return response([
+                    'status' => false,
+                    'message' => 'Ruang kelas sudah dipakai',
+                    'data' => '',
+                    'debug' => [
+                        'count' => $check_jadwal_ruang,
                         'between' => $between_number
                     ],
                 ]);
@@ -205,10 +254,6 @@ class JadwalController extends Controller
                 'status' => true,
                 'message' => "Data berhasil di edit",
                 'data' => $jadwal,
-                'debug' => [
-                    'count' => $check_jadwal,
-                    'between' => $between_number
-                ],
             ], 200);   
 
         } catch (\Throwable $th) {
@@ -243,7 +288,7 @@ class JadwalController extends Controller
     {
 
         $kelas_id_only = Kelas::all(['id']);
-        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->get();
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_semester', $this->id_semester)->get();
         $jadwal_group = [];
         foreach ($kelas_id_only as $key => $value) {
             $jadwal_group[$value->id] = [];
@@ -275,7 +320,7 @@ class JadwalController extends Controller
     public function cetakBerdasarkanGuru(Request $req)
     {
         $list_id_guru = Guru::all(['id']);
-        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->get();
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_semester', $this->id_semester)->get();
         $jadwal_group = [];
         foreach ($list_id_guru as $key => $guru) {
             $jadwal_group[$guru->id] = [];
