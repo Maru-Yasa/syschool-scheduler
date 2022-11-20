@@ -7,7 +7,7 @@
 @section('content')
 
 {{-- modal print --}}
-<div class="modal fade" id="modal_print_jadwal" role="dialog" aria-labelledby="modal_edit_jadwal" aria-hidden="true" tabindex="-1">
+<div class="modal fade" id="modal_print_jadwal" role="dialog" aria-labelledby="modal_edit_jadwal" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -26,7 +26,7 @@
     </div>
 </div>
 {{-- modal edit jadwal --}}
-<div class="modal fade" id="modal_edit_jadwal" tabindex="-1" role="dialog" aria-labelledby="modal_edit_jadwal" aria-hidden="true">
+<div class="modal fade" id="modal_edit_jadwal" role="dialog" aria-labelledby="modal_edit_jadwal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -87,7 +87,7 @@
 </div>
 
 {{-- modal add jadwal --}}
-<div class="modal fade" id="modal_add_jadwal" tabindex="-1" role="dialog" aria-labelledby="modal_add_jadwal" aria-hidden="true">
+<div class="modal fade" id="modal_add_jadwal" role="dialog" aria-labelledby="modal_add_jadwal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -697,6 +697,7 @@
         }
 
         $(document).ready(() => {
+            $.fn.modal.Constructor.prototype.enforceFocus = function() {};
             window.html2canvas = html2canvas;
             $('select').select2()
             dayjs.extend(window.dayjs_plugin_customParseFormat);
