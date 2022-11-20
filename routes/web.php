@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -128,7 +129,7 @@ Route::group(['middleware' => 'auth'], function(){
 });
 
     Route::group(['prefix' => '/'], function(){
-        Route::get('/', 'App\Http\Controllers\indexController@jurusan')->name('lihat_jurusan');
-        Route::get('/preview/kelas/{id}', 'App\Http\Controllers\indexController@kelas')->name('lihat_kelas');
-        Route::get('/preview/jadwal/{id}', 'App\Http\Controllers\indexController@jadwal')->name('lihat_jadwal');
+        Route::get('/', 'App\Http\Controllers\IndexController@jurusan')->name('lihat_jurusan');
+        Route::get('/preview/kelas/{id}', 'App\Http\Controllers\IndexController@kelas')->name('lihat_kelas');
+        Route::get('/preview/jadwal/{id}', 'App\Http\Controllers\IndexController@jadwal')->name('lihat_jadwal');
     });

@@ -57,6 +57,10 @@
             -webkit-transform: scale(0.5);
             transform: scale(1.1); 
         }
+
+        .logo-sekolah {
+            max-width: 128px;
+        }
     </style>
 </head>
 <body>
@@ -69,11 +73,11 @@
     <div class="content">
         <div class="row justify-content-center mt-5">
             <div class="col-12 text-center">
-                <img src="{{ asset('image/logo/logo.png') }}" alt="">
+                <img src="{{ asset('image/logo/'.$setting_umum->logo) }}" class="img-fluid logo-sekolah" alt="">
                 <h1 class="mt-3">Selamat Datang</h1>
-                <h3>Jadwal Pelajaran SMK N 1 Bantul</h3>
+                <h3>Jadwal Pelajaran {{ $setting_umum->nama_sekolah }}</h3>
             </div>
-        </div>
+        </div>  
         <div class="">
             <div class="d-flex flex-wrap align-items-center justify-content-center mt-4 w-100 h-100">
                 Jadwal Pelajaran Disini

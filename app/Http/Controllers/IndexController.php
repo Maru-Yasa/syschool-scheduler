@@ -12,15 +12,18 @@ class IndexController extends Controller
     public function jurusan()
     {
         $jurusan = Jurusan::all();
-       return view('jurusanPage', ['jurusan' => $jurusan]);
+        $settingUmum = SettingUmum::all()->first();
+        return view('jurusanPage', ['jurusan' => $jurusan, 'setting_umum' => $settingUmum]);
     }
     public function kelas($id)
     {
         $kelas = Kelas::all()->where('id_jurusan', $id);
-       return view('kelasPage', ['kelas' => $kelas, 'id_jurusan' => $id]);
+        $settingUmum = SettingUmum::all()->first();
+        return view('kelasPage', ['kelas' => $kelas, 'id_jurusan' => $id, 'setting_umum' => $settingUmum]);
     }
     public function jadwal($id)
     {
-       return view('jadwalPage', ['id_jurusan' => $id]);
+        $settingUmum = SettingUmum::all()->first();
+        return view('jadwalPage', ['id_jurusan' => $id, 'setting_umum' => $settingUmum]);
     }
 }
