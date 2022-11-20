@@ -9,6 +9,8 @@
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
     <style>
         * {
             box-sizing: border-box;
@@ -16,7 +18,7 @@
 
         body {
             margin: 0;
-            font-family: Arial;
+            font-family: Poppins;
             font-size: 17px;
         }
 
@@ -61,6 +63,13 @@
         .logo-sekolah {
             max-width: 128px;
         }
+        @media only screen and (min-width: 200px) and (max-width: 1250px) { 
+            .content {
+            overflow-y: scroll;
+            overflow-x: hidden;
+
+        }
+         } 
         
     </style>
 </head>
@@ -88,7 +97,9 @@
                             <div class="card p-3 shadow text-center mx-0"
                                 style="background-color:#ffffff9c;width: 7rem;height: 7rem;">
                                 <p class="h1 text-dark my-0 font-weight-bold"><i class="{{ $item->icon }}"></i></p>
-                                <p class="p font-weight-bold font-weight-bold mt-2">{{ $item->nama_jurusan }}</p>
+                                <div class="" style="white-space: nowrap;width: 70px;overflow: hidden;text-overflow: ellipsis; ">
+                                    <p class="p font-weight-bold font-weight-bold mt-2">{{ $item->nama_jurusan }}</p>
+                                </div>
                             </div>
                         </div>
                     </a>   

@@ -61,6 +61,14 @@
         .logo-sekolah {
             max-width: 128px;
         }
+        
+        @media only screen and (min-width: 200px) and (max-width: 1250px) { 
+            .content {
+            overflow-y: scroll;
+            overflow-x: hidden;
+
+        }
+         } 
 
     </style>
 </head>
