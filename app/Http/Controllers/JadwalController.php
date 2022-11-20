@@ -113,7 +113,7 @@ class JadwalController extends Controller
         }
 
 
-        $data_to_submit = $req->all();
+        $data_to_submit = $req->except(['id_jurusan']);
         $data_to_submit['id_semester'] = SettingUmum::all()[0]->id_semester;
         $jadwal = Jadwal::create($data_to_submit);
         return response([
