@@ -1,9 +1,17 @@
 @extends('layouts.preview')
 @section('content')
     
-        <div class="">
-            <div id="table-wrapper" class="d-flex flex-wrap align-items-center justify-content-center mt-4 px-5 overflow-auto">
+        <style>
+            #table-wrapper {
+                overflow: scroll;
+            }
+        </style>
 
+        <div class="">
+            <div id="table-wrapper" class="d-flex flex-wrap align-items-center justify-content-center mt-4 px-5">
+                <div class="text-center">
+                    <h2 id="msg">Loading</h2>
+                </div>
             </div>
             <div class="text-center mt-5">
                 <a href="{{ route('lihat_kelas', $id_jurusan) }}" class="h1" style="text-decoration-nonr;"><i class="bi bi-arrow-left-circle-fill"></i></a>
@@ -44,7 +52,7 @@
 
             // render table
             tbl.setAttribute('id', table_id)
-            tbl.setAttribute('class', "table table-sm table-bordered mb-3 bg-white")
+            tbl.setAttribute('class', "table table-sm table-bordered mb-3 bg-white rounded")
             const nama_kelas_element = document.createElement('h3')
             const kelas_url = "{{ route('get_kelas_by_id') }}"
             
@@ -150,7 +158,11 @@
                 success: (res) => {
                     console.log(res);
                     const kelas_raw = Object.keys(res)
-                    $("#table-wrapper").empty()
+                    if(res.length !== 0){
+                        $("#table-wrapper").empty()
+                    }else{
+                        $('#msg').html('Jadwal belum tersedia')
+                    }
                         kelas_raw.forEach((id_kelas) => {
                         const obj = res[id_kelas]
                         const kelas_url = "{{ route('get_kelas_by_id') }}"

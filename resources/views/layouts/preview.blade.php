@@ -72,7 +72,9 @@
 </head>
 <body>
     <div class="fullscreen-bg">
-        {{-- <img class="img-fluid" src="{{ asset('image/bg.png') }}" alt=""> --}}
+        <video loop muted autoplay class="fullscreen-bg__video" id="myVideo">
+            <source src="{{ asset('video/bg_video.mp4') }}" type="video/mp4">
+        </video>
     </div>
 
     <div class="content">
