@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,8 +63,6 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/edit', 'App\Http\Controllers\JadwalController@edit')->name('edit_jadwal');
         Route::get('/get', 'App\Http\Controllers\JadwalController@getAll')->name('get_jadwal');
         Route::post('/tambah', 'App\Http\Controllers\JadwalController@add')->name("tambah_jadwal");
-
-        Route::get('/getJadwalByKelas', 'App\Http\Controllers\JadwalController@getJadwalByKelas')->name('get_jadwal_kelas');
         Route::get('/getAllJadwal', 'App\Http\Controllers\JadwalController@getAllJadwal')->name('get_all_jadwal');
         Route::get('/getById/{id}', 'App\Http\Controllers\JadwalController@getJadwalById')->name('get_jadwal_by_id');
 
@@ -95,7 +92,6 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/{id}/delete', 'App\Http\Controllers\KelasController@delete')->name('delete_kelas');
         Route::post('/edit', 'App\Http\Controllers\KelasController@edit')->name('edit_kelas');
         Route::get('/get', 'App\Http\Controllers\KelasController@getAll')->name('get_kelas');
-        Route::get('/getById', 'App\Http\Controllers\KelasController@getById')->name('get_kelas_by_id');
         
         Route::post('/tambah', 'App\Http\Controllers\KelasController@tambah')->name('tambah_kelas');
     });
@@ -127,6 +123,15 @@ Route::group(['middleware' => 'auth'], function(){
     });
 
 });
+
+    Route::group(['prefix' => 'jadwal'], function(){
+        Route::get('/getJadwalByKelas', 'App\Http\Controllers\JadwalController@getJadwalByKelas')->name('get_jadwal_kelas');
+    });
+
+    Route::group(['prefix' => 'kelas'], function(){
+        Route::get('/getById', 'App\Http\Controllers\KelasController@getById')->name('get_kelas_by_id');
+    });
+
 
     Route::group(['prefix' => '/'], function(){
         Route::get('/', 'App\Http\Controllers\IndexController@jurusan')->name('lihat_jurusan');
