@@ -179,7 +179,8 @@
         }
 
         $(document).ready(() => {
-            console.log('test');
+            // viewport.setAttribute('content', 'width=1024');
+            $("*[name=viewport]").prop('content', 'width=1024')
             dayjs.extend(window.dayjs_plugin_customParseFormat);
             renderTable();
 
