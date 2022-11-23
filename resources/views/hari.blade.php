@@ -107,9 +107,9 @@
         });
 
     function editJurusan(e){
-        console.log($(e)[0]);
+        
         const data = $(e).data('json')
-        console.log("🚀 ~ file: hari.blade.php ~ line 100 ~ editJurusan ~ data", data)
+        
         $("#modalEditJurusan").modal('show')
         $("#modalEditJurusan").on('shown.bs.modal', () => {
 
@@ -122,7 +122,7 @@
             $("#form_edit_hari").off().one('submit',(e) => {
                 e.preventDefault()
                 $(`input`).removeClass('is-invalid')
-                console.log("submit");
+                
                 const formData = new FormData($("#form_edit_hari")[0])
                 $('#button_edit_hari').prop('disabled', true);
                 $.ajax({
@@ -136,7 +136,7 @@
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
                         $('#button_edit_hari').prop('disabled', false);
-                        console.log("🚀 ~ file: hari.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             table_hari.ajax.reload()
                             $("#modalEditJurusan").modal('hide')
@@ -152,7 +152,7 @@
                     },
                     error: (res) => {
                         $('#button_edit_hari').prop('disabled', false);
-                        console.log(res);
+                        
                     }
                 })
             })
@@ -188,14 +188,14 @@
         })
     }
     $(document).ready(() => {
-        console.log("HI");
+        
 
         $('#role_input').select2()
 
         $("#modalTambahJurusan").on('shown.bs.modal', () => {
             $("#formTambahJurusan").off().on('submit',(e) => {
                 e.preventDefault()
-                console.log('submit');
+                
                 const formData = new FormData($("#formTambahJurusan")[0])
                 $('#buttonTambahJurusan').prop('disabled', true);
 
@@ -210,7 +210,7 @@
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
                         $('#buttonTambahJurusan').prop('disabled', false);
-                        console.log("🚀 ~ file: hari.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             toastr.success(res.message)
                             $("#formTambahJurusan").trigger('reset')
@@ -219,7 +219,7 @@
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
                                 $(`*[name=${value}]`).addClass('is-invalid')
-                                console.log($(`#validation_${value}`));
+                                
                                 $(`#validation_${value}`).html(res.messages[value])
                                 $(`#validation_${value}`).prop('hidden', false)                               
                             })
@@ -228,7 +228,7 @@
                     error: (res) => {
                         $('#buttonTambahJurusan').prop('disabled', false);
 
-                        console.log(res);
+                        
                     }
                 })
 

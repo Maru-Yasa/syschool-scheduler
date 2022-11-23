@@ -202,7 +202,7 @@
 
     }
     dayjs.extend(window.dayjs_plugin_customParseFormat);
-    console.log('hellow world');
+    
     const allJadwal =  @json($master_jadwal);
     const master_guru = @json($master_guru);
 

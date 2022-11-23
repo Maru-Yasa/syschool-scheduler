@@ -93,9 +93,9 @@
         });
 
     function editMapel(e){
-        console.log($(e)[0]);
+        
         const data = $(e).data('json')
-        console.log("🚀 ~ file: mapel.blade.php ~ line 100 ~ editMapel ~ data", data)
+        
         $("#modalEditMapel").modal('show')
         $("#modalEditMapel").on('shown.bs.modal', () => {
 
@@ -105,7 +105,7 @@
 
             // submit handler
             $("#button_edit_mapel").off().on('click', (e) => {
-                console.log("submit");
+                
                 const formData = new FormData($("#form_edit_mapel")[0])
                 $.ajax({
                     type: 'post',
@@ -115,7 +115,7 @@
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        console.log("🚀 ~ file: mapel.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             table_mapel.ajax.reload()
                             $("#modalEditMapel").modal('hide')
@@ -131,7 +131,7 @@
                     },
                     error: (res) => {
                         $('#button_edit_mapel').prop('disabled', false);
-                        console.log(res);
+                        
                     },
                     complete: () => {
                         $('#button_edit_mapel').prop('disabled', false);
@@ -176,7 +176,7 @@
         $("#modalTambahMapel").on('shown.bs.modal', () => {
             $("#formTambahMapel").off().on('submit',(e) => {
                 e.preventDefault()
-                console.log('submit');
+                
                 const formData = new FormData($("#formTambahMapel")[0])
                 $('#buttonTambahMapel').prop('disabled', true);
 
@@ -189,7 +189,7 @@
                     data: formData,
                     success: (res) => {
                         $('#buttonTambahMapel').prop('disabled', false);
-                        console.log("🚀 ~ file: mapel.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             toastr.success(res.message)
                             $("#formTambahMapel").trigger('reset')
@@ -198,7 +198,7 @@
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
                                 $(`*[name=${value}]`).addClass('is-invalid')
-                                console.log($(`#validation_${value}`));
+                                
                                 $(`#validation_${value}`).html(res.messages[value])
                                 $(`#validation_${value}`).prop('hidden', false)                               
                             })
@@ -207,7 +207,7 @@
                     error: (res) => {
                         $('#buttonTambahMapel').prop('disabled', false);
 
-                        console.log(res);
+                        
                     }
                 })
 

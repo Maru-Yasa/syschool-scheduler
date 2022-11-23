@@ -156,7 +156,7 @@
                 url: "{{ route('get_jadwal_kelas') }}" + "?id_kelas={{ $id_kelas }}",
                 type: 'get',
                 success: (res) => {
-                    console.log(res);
+                    
                     const kelas_raw = Object.keys(res)
                     if(res.length !== 0){
                         $("#table-wrapper").empty()

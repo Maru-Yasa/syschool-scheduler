@@ -141,9 +141,9 @@
         }
 
     function editKelas(e){
-        console.log($(e)[0]);
+        
         const data = $(e).data('json')
-        console.log("🚀 ~ file: kelas.blade.php ~ line 100 ~ editKelas ~ data", data)
+        
         $("#modalEditKelas").modal('show')
         $("#modalEditKelas").on('shown.bs.modal', () => {
 
@@ -157,7 +157,7 @@
             $("#form_edit_kelas").off().on('submit',(e) => {
                 e.preventDefault()
                 $(`input`).removeClass('is-invalid')
-                console.log("submit");
+                
                 const formData = new FormData($("#form_edit_kelas")[0])
                 $('#button_edit_kelas').prop('disabled', true);
                 $.ajax({
@@ -171,7 +171,7 @@
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
                         $('#button_edit_kelas').prop('disabled', false);
-                        console.log("🚀 ~ file: kelas.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             table_kelas.ajax.reload()
                             $("#modalEditKelas").modal('hide')
@@ -187,7 +187,7 @@
                     },
                     error: (res) => {
                         $('#button_edit_kelas').prop('disabled', false);
-                        console.log(res);
+                        
                     }
                 })
             })
@@ -223,7 +223,7 @@
         })
     }
     $(document).ready(() => {
-        console.log("HI");
+        
         $('select[name=id_jurusan]').select2()
         $.ajax({
             type:'get',
@@ -243,7 +243,7 @@
         $("#modalTambahKelas").on('shown.bs.modal', () => {
             $("#formTambahKelas").off().on('submit',(e) => {
                 e.preventDefault()
-                console.log('submit');
+                
                 const formData = new FormData($("#formTambahKelas")[0])
                 $('#buttonTambahKelas').prop('disabled', true);
 
@@ -258,7 +258,7 @@
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
                         $('#buttonTambahKelas').prop('disabled', false);
-                        console.log("🚀 ~ file: kelas.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             toastr.success(res.message)
                             $("#formTambahKelas").trigger('reset')
@@ -267,7 +267,7 @@
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
                                 $(`*[name=${value}]`).addClass('is-invalid')
-                                console.log($(`#validation_${value}`));
+                                
                                 $(`#validation_${value}`).html(res.messages[value])
                                 $(`#validation_${value}`).prop('hidden', false)                               
                             })
@@ -276,7 +276,7 @@
                     error: (res) => {
                         $('#buttonTambahKelas').prop('disabled', false);
 
-                        console.log(res);
+                        
                     }
                 })
 

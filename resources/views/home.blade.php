@@ -354,9 +354,9 @@
     }
 
     function editSettingJeda(e){
-        console.log($(e)[0]);
+        
         const data = $(e).data('json')
-        console.log("🚀 ~ file: jurusan.blade.php ~ line 100 ~ editJurusan ~ data", data)
+        
         $("#modal_edit_jeda").modal('show')
         $("#modal_edit_jeda").on('shown.bs.modal', () => {
 
@@ -371,7 +371,7 @@
             $("#form_edit_jeda").off().on('submit',(e) => {
                 e.preventDefault()
                 $(`input`).removeClass('is-invalid')
-                console.log("submit");
+                
                 const formData = new FormData($("#form_edit_jeda")[0])
                 $('#button_edit_jeda').prop('disabled', true);
                 $.ajax({
@@ -385,7 +385,7 @@
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
                         $('#button_edit_jurusan').prop('disabled', false);
-                        console.log("🚀 ~ file: jurusan.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             table_jeda.ajax.reload()
                             $("#modal_edit_jeda").modal('hide')
@@ -401,7 +401,7 @@
                     },
                     error: (res) => {
                         $('#button_edit_jeda').prop('disabled', false);
-                        console.log(res);
+                        
                     }
                 })
             })
@@ -464,7 +464,7 @@
                         text: semester.nama_semester
                     })
                 });
-                console.log(data);
+                
                 $("select[name=id_semester]").select2({
                     data: data
                 })
@@ -474,7 +474,7 @@
         $("#modal_tambah_jeda").on('shown.bs.modal', () => {
             $("#form_tambah_jeda").off().on('submit',(e) => {
                 e.preventDefault()
-                console.log('submit');
+                
                 const formData = new FormData($("#form_tambah_jeda")[0])
                 $('#button_tambah_jeda').prop('disabled', true);
 
@@ -489,7 +489,7 @@
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
                         $('#button_tambah_jeda').prop('disabled', false);
-                        console.log("🚀 ~ file: jurusan.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             toastr.success(res.message)
                             $("#form_tambah_jeda").trigger('reset')
@@ -498,7 +498,7 @@
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
                                 $(`*[name=${value}]`).addClass('is-invalid')
-                                console.log($(`#validation_${value}`));
+                                
                                 $(`#validation_${value}`).html(res.messages[value])
                                 $(`#validation_${value}`).prop('hidden', false)                               
                             })
@@ -507,7 +507,7 @@
                     error: (res) => {
                         $('#button_tambah_jeda').prop('disabled', false);
 
-                        console.log(res);
+                        
                     }
                 })
 
@@ -532,21 +532,21 @@
                     success: (res) => {
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
-                        console.log("🚀 ~ file: jurusan.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             toastr.success(res.message)
                         }else{
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
                                 $(`*[name=${value}]`).addClass('is-invalid')
-                                console.log($(`#validation_${value}`));
+                                
                                 $(`#validation_${value}`).html(res.messages[value])
                                 $(`#validation_${value}`).prop('hidden', false)                               
                             })
                         }
                     },
                     error: (res) => {
-                        console.log(res);
+                        
                     }
             })
         })
@@ -581,7 +581,7 @@
                 success: (res) => {
                     $(`input`).removeClass('is-invalid')
                     $('.validation').empty().prop('hidden', true)
-                    console.log("🚀 ~ file: jurusan.blade.php ~ line 87 ~ $ ~ res", res)
+                    
                     if(res.status){
                         toastr.success(res.message)
                         renderDisplay()
@@ -589,14 +589,14 @@
                         toastr.error(res.message)
                         Object.keys(res.messages).forEach((value, key) => {
                             $(`*[name=${value}]`).addClass('is-invalid')
-                            console.log($(`#validation_${value}`));
+                            
                             $(`#validation_${value}`).html(res.messages[value])
                             $(`#validation_${value}`).prop('hidden', false)                               
                         })
                         }
                 },
                 error: (res) => {
-                    console.log(res);
+                    
                 }
             })
         })

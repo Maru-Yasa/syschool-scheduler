@@ -141,7 +141,7 @@
             tbl.setAttribute('class', "table table-sm table-bordered mb-3")
             const nama_kelas = document.createElement('h3')
             nama_kelas.innerHTML = data[0].kelas.nama_kelas
-            console.log('data', data);
+            
             container.appendChild(nama_kelas)
             container.appendChild(tbl)
 
@@ -275,7 +275,7 @@
                 url: "{{ route('get_ruang_kelas') }}",
                 type: 'get',
                 success: (res) => {
-                    console.log(res);
+                    
                     let data = [];
                     res.data.forEach(ruang => {
                         data.push({
@@ -296,14 +296,14 @@
                 type: 'get',
                 success: (res) => {
                     let data = [];
-                    console.log(res);
+                    
                     res.data.forEach(guru => {
                         data.push({
                             id: guru.id,
                             text: guru.nama_raw
                         })
                     });
-                    console.log(data);
+                    
                     $("select[name=id_guru]").select2({
                         data: data
                     })
@@ -379,7 +379,7 @@
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        console.log(res);
+                        
                         if(res.status){
                             toastr.success(res.message)
                             $(".validation").removeClass('is-invalid')
@@ -402,7 +402,7 @@
                         }
                     },
                     error: (res) => {
-                        console.log(res);
+                        
                     }
                 })
             })

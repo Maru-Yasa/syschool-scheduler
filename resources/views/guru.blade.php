@@ -109,9 +109,9 @@
         });
 
     function editGuru(e){
-        console.log($(e)[0]);
+        
         const data = $(e).data('json')
-        console.log("🚀 ~ file: guru.blade.php ~ line 100 ~ editGuru ~ data", data)
+        
         $("#modalEditGuru").modal('show')
         $("#modalEditGuru").on('shown.bs.modal', () => {
 
@@ -131,7 +131,7 @@
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        console.log("🚀 ~ file: guru.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             table_guru.ajax.reload()
                             $("#modalEditGuru").modal('hide')
@@ -147,7 +147,7 @@
                     },
                     error: (res) => {
                         $('#button_edit_guru').prop('disabled', false);
-                        console.log(res);
+                        
                     },
                     complete: () => {
                         $('#button_edit_guru').prop('disabled', false);
@@ -187,14 +187,14 @@
         })
     }
     $(document).ready(() => {
-        console.log("HI");
+        
 
         $('#role_input').select2()
 
         $("#modalTambahGuru").on('shown.bs.modal', () => {
             $("#formTambahGuru").off().one('submit',(e) => {
                 e.preventDefault()
-                console.log('submit');
+                
                 const formData = new FormData($("#formTambahGuru")[0])
                 $('#buttonTambahGuru').prop('disabled', true);
 
@@ -207,7 +207,7 @@
                     data: formData,
                     success: (res) => {
                         $('#buttonTambahGuru').prop('disabled', false);
-                        console.log("🚀 ~ file: guru.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             toastr.success(res.message)
                             $("#formTambahGuru").trigger('reset')
@@ -216,7 +216,7 @@
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
                                 $(`*[name=${value}]`).addClass('is-invalid')
-                                console.log($(`#validation_${value}`));
+                                
                                 $(`#validation_${value}`).html(res.messages[value])
                                 $(`#validation_${value}`).prop('hidden', false)                               
                             })
@@ -225,7 +225,7 @@
                     error: (res) => {
                         $('#buttonTambahGuru').prop('disabled', false);
 
-                        console.log(res);
+                        
                     }
                 })
 

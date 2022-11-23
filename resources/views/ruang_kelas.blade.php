@@ -114,9 +114,9 @@
         });
 
     function editRuangKelas(e){
-        console.log($(e)[0]);
+        
         const data = $(e).data('json')
-        console.log("🚀 ~ file: ruang_kelas.blade.php ~ line 100 ~ editRuang ~ data", data)
+        
         $("#modalEditRuangKelas").modal('show')
         $("#modalEditRuangKelas").on('shown.bs.modal', () => {
 
@@ -127,7 +127,7 @@
 
             // submit handler
             $("#button_edit_guru").off().on('click', (e) => {
-                console.log("submit");
+                
                 const formData = new FormData($("#form_edit_guru")[0])
                 $.ajax({
                     type: 'post',
@@ -137,7 +137,7 @@
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        console.log("🚀 ~ file: ruang_kelas.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             table_ruang_kelas.ajax.reload()
                             $("#modalEditRuang").modal('hide')
@@ -153,7 +153,7 @@
                     },
                     error: (res) => {
                         $('#button_edit_ruang_kelas').prop('disabled', false);
-                        console.log(res);
+                        
                     },
                     complete: () => {
                         $('#button_edit_ruang_kelas').prop('disabled', false);
@@ -193,7 +193,7 @@
         })
     }
     $(document).ready(() => {
-        console.log("HI hj");
+        
 
         $('select[name=owner]').select2()
         $.ajax({
@@ -214,7 +214,7 @@
         $("#modalTambahRuangKelas").on('shown.bs.modal', () => {
             $("#formTambahRuangKelas").off().on('submit', (e) => {
                 e.preventDefault()
-                console.log('submit');
+                
                 const formData = new FormData($("#formTambahRuangKelas")[0])
                 $('#buttonTambahRuang').prop('disabled', true);
 
@@ -230,7 +230,7 @@
                     data: formData,
                     success: (res) => {
                         $('#buttonTambahRuang').prop('disabled', false);
-                        console.log("🚀 ~ file: ruang_kelas.blade.php ~ line 87 ~ $ ~ res", res)
+                        
                         if(res.status){
                             toastr.success(res.message)
                             $("#formTambahRuang").trigger('reset')
@@ -239,7 +239,7 @@
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
                                 $(`*[name=${value}]`).addClass('is-invalid')
-                                console.log($(`#validation_${value}`));
+                                
                                 $(`#validation_${value}`).html(res.messages[value])
                                 $(`#validation_${value}`).prop('hidden', false)                               
                             })
@@ -248,7 +248,7 @@
                     error: (res) => {
                         $('#buttonTambahRuang').prop('disabled', false);
 
-                        console.log(res);
+                        
                     }
                 })
 

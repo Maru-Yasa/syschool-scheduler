@@ -409,14 +409,14 @@
                             type: 'get',
                             success: (res) => {
                                 let data = [];
-                                console.log(res);
+                                
                                 res.data.forEach(guru => {
                                     data.push({
                                         id: guru.id,
                                         text: guru.nama_raw
                                     })
                                 });
-                                console.log(data);
+                                
                                 $("select[name=id_guru]").select2({
                                     data: data
                                 })
@@ -449,7 +449,7 @@
                             url: "{{ route('get_ruang_kelas') }}",
                             type: 'get',
                             success: (res) => {
-                                console.log(res);
+                                
                                 let data = [];
                                 res.data.forEach(ruang => {
                                     data.push({
@@ -502,7 +502,7 @@
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        console.log(res);
+                        
                         if(res.status){
                             $("#modal_add_jadwal").modal('hide')
                             renderTable()
@@ -518,7 +518,7 @@
                     },
                     error: (res) => {
                         $('#button_edit_guru').prop('disabled', false);
-                        console.log(res);
+                        
                     },
                     complete: () => {
                         $('#button_edit_guru').prop('disabled', false);
@@ -556,14 +556,14 @@
                             type: 'get',
                             success: (res) => {
                                 let data = [];
-                                console.log(res);
+                                
                                 res.data.forEach(guru => {
                                     data.push({
                                         id: guru.id,
                                         text: guru.nama_raw
                                     })
                                 });
-                                console.log(data);
+                                
                                 $("select[name=id_guru]").select2({
                                     data: data
                                 })
@@ -631,7 +631,7 @@
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        console.log(res);
+                        
                         $("select").removeClass('is-invalid')                        
                         $("input").removeClass('is-invalid')    
                         $(".validation").removeClass('is-invalid')                    
@@ -650,7 +650,7 @@
                     },
                     error: (res) => {
                         $('#button_edit_guru').prop('disabled', false);
-                        console.log(res);
+                        
                     },
                     complete: () => {
                         $('#button_edit_guru').prop('disabled', false);
@@ -690,7 +690,7 @@
         }
 
         function printDiv(source) {
-            console.log(`${window.location.origin}/cetak/semuaJadwal`);
+            
             let mywindow = window.open(`${window.location.origin}/cetak/semuaJadwal`, 'PRINT', 'height=650,width=900,top=100,left=150');
             mywindow.document.write(source);
             mywindow.document.close(); // necessary for IE >= 10
