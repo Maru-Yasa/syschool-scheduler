@@ -188,8 +188,8 @@
             data.forEach((obj) => {
                 const elem = $(`#${id}-${obj.jam_awal}-${obj.hari.urut}`)
                 const selisih = obj.jam_akhir - obj.jam_awal + 1
-                elem.html(`${obj.mapel.nama_mapel} <br> ${obj.guru.nama}`)
                 if(obj.id_guru == id_guru){
+                    elem.html(`${obj.mapel.nama_mapel} <br> ${obj.guru.nama}`)
                     elem.css('background-color', 'rgba(0,123,255, 0.1)')
                 }else{
                     elem.css('background-color', 'rgba(217, 83, 79, 0.1)	')
