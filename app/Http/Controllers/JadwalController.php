@@ -233,6 +233,8 @@ class JadwalController extends Controller
                 ], 200);
             }
 
+            // return response($req->all());
+
             $jadwal = Jadwal::all()->where('id', $req->id)->first();
             
             // validate guru, apakah sudah mengajar atau belum
@@ -245,8 +247,8 @@ class JadwalController extends Controller
                 ->where('id_hari', $req->id_hari)->get();
             if(count($_jadwal) > 0){
                 for ($i=0; $i < count($_jadwal); $i++) { 
-                    $jadwal = $_jadwal[$i];
-                    $between_jadwal = range($jadwal->jam_awal, $jadwal->jam_akhir);
+                    $obj = $_jadwal[$i];
+                    $between_jadwal = range($obj->jam_awal, $obj->jam_akhir);
                     $between_input = $between_number;
                     if(count(array_intersect($between_jadwal, $between_input)) > 0){
                         $check_jadwal_guru = false;
@@ -276,8 +278,8 @@ class JadwalController extends Controller
                 ->where('id_hari', $req->id_hari)->get();
             if(count($_jadwal) > 0){
                 for ($i=0; $i < count($_jadwal); $i++) { 
-                    $jadwal = $_jadwal[$i];
-                    $between_jadwal = range($jadwal->jam_awal, $jadwal->jam_akhir);
+                    $obj = $_jadwal[$i];
+                    $between_jadwal = range($obj->jam_awal, $obj->jam_akhir);
                     $between_input = $between_number;
                     if(count(array_intersect($between_jadwal, $between_input)) > 0){
                         $check_jadwal_ruang = false;

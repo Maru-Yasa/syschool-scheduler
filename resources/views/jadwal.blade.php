@@ -79,7 +79,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-primary" id="button_edit" data-id-kelas="">Simpan</button>
             </form>
         </div>
       </div>
@@ -203,7 +203,8 @@
 
         }
 
-        function renderTable(customData=null) {
+
+        function renderTable(customData=null, render_by_id_kelas=null) {
             // get all jadwal
             if(customData !== null){
                 const kelas_raw = Object.keys(customData)
@@ -219,6 +220,8 @@
                         }
                     })
                 })
+            }
+            else if(render_by_id_kelas !== null){
             }else{
                 $.ajax({
                     url: "{{ route('get_all_jadwal') }}",
@@ -535,6 +538,8 @@
                 url: url_ajax,
                 type: 'get',
                 success: (jadwal) => {
+                    const id_kelas = jadwal.id_kelas
+                    $("#button_edit").data('id-kelas', id_kelas);
                     $("#modal_edit_jadwal").modal('show')
                     $("#modal_edit_jadwal").on('shown.bs.modal', (e) => {
                         // id
@@ -614,6 +619,7 @@
             $("#form_edit_jadwal").off().on('submit', (e) => {
                 e.preventDefault()
                 const formData = new FormData($('#form_edit_jadwal')[0])
+                const id_kelas = $('button_edit').data('id-kelas');
                 $.ajax({
                     type: 'post',
                     method: 'post',
@@ -630,8 +636,8 @@
                         $("input").removeClass('is-invalid')    
                         $(".validation").removeClass('is-invalid')                    
                         if(res.status){
-                            $("#modal_edit_jadwal").modal('hide')
                             renderTable()
+                            $("#modal_edit_jadwal").modal('hide')
                             toastr.success(res.message)
                         }else{
                             toastr.error(res.message)
