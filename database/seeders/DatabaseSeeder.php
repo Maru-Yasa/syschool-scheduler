@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Guru;
 use App\Models\Hari;
 use App\Models\Semester;
 use App\Models\SettingJP;
@@ -26,11 +27,26 @@ class DatabaseSeeder extends Seeder
 
         if (count(User::all()) == 0) {
             User::create([
+                'username' => 'root',
                 'name' => 'root',
                 'email' => 'root@root.com',
-                'password' => Hash::make('tempe12345'),
-                'role' => 'root'
+                'password' => Hash::make('password'),
+                'role' => 'admin'
             ]);
+
+            $guru = Guru::create([
+                'nama' => 'Budiyanto',
+            ]);
+
+            User::create([
+                'username' => 'guru_budi',
+                'name' => 'Budiyanto',
+                'password' => Hash::make('password'),
+                'role' => 'guru',
+                'id_guru' => $guru->id
+
+            ]);
+
         }
 
         if (count(SettingUmum::all()) == 0) {

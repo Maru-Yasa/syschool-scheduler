@@ -2,6 +2,9 @@
 
 @section('header')
     <h1 class="fw-bold">Tambah Jadwal</h1>
+    @if (!$master_setting_umum->id_semester)
+        <div class="alert bg-danger mt-3"><i class="bi bi-exclamation-triangle-fill mr-2"></i> Anda belum memilih semster, pilih semester di halaman beranda\setting umum</div>
+    @endif
 @endsection
 
 @section('content')
