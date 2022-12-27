@@ -42,6 +42,7 @@
         
             <form id="form_edit_jadwal" action="">
                 <input type="text" hidden name="id">
+                <input type="text" hidden name="id_kelas">
                 <div class="mb-3 d-flex flex-column">
                     <label for="">Guru :</label>
                     <select class="form-control form-control-sm" name="id_guru" id="">
@@ -399,13 +400,13 @@
                     $("#modal_add_jadwal").on('shown.bs.modal', (e) => {
                         
                         // jam awal
-                        $("input[name=jam_awal]").val(target.data('jp-awal'))
+                        $("#modal_add_jadwal input[name=jam_awal]").val(target.data('jp-awal'))
 
                         //jam akhir
-                        $("input[name=jam_akhir]").val(jadwal.jam_akhir)
+                        $("#modal_add_jadwal input[name=jam_akhir]").val(jadwal.jam_akhir)
 
                         //id kelas
-                        $("input[name=id_kelas]").val(target.data('id-kelas'))
+                        $("#modal_add_jadwal input[name=id_kelas]").val(target.data('id-kelas'))
                         
                         // guru
                         $.ajax({
@@ -505,8 +506,7 @@
                     processData: false,
                     contentType: false,
                     data: formData,
-                    success: (res) => {
-                        
+                    success: (res) => {                        
                         if(res.status){
                             $("#modal_add_jadwal").modal('hide')
                             renderTable()
@@ -547,12 +547,15 @@
                     $("#modal_edit_jadwal").modal('show')
                     $("#modal_edit_jadwal").on('shown.bs.modal', (e) => {
                         // id
-                        $("input[name=id]").val(id_jadwal)
+                        $("#modal_edit_jadwal input[name=id]").val(id_jadwal)
                         // jam awal
-                        $("input[name=jam_awal]").val(jadwal.jam_awal)
+                        $("#modal_edit_jadwal input[name=jam_awal]").val(jadwal.jam_awal)
+
+                        // id_kelas
+                        $("#modal_edit_jadwal input[name=id_kelas]").val(jadwal.id_kelas)
 
                         //jam akhir
-                        $("input[name=jam_akhir]").val(jadwal.jam_akhir)
+                        $("#modal_edit_jadwal input[name=jam_akhir]").val(jadwal.jam_akhir)
                         
                         // guru
                         $.ajax({
@@ -635,7 +638,8 @@
                     contentType: false,
                     data: formData,
                     success: (res) => {
-                        
+                        console.log(res);
+
                         $("select").removeClass('is-invalid')                        
                         $("input").removeClass('is-invalid')    
                         $(".validation").removeClass('is-invalid')                    

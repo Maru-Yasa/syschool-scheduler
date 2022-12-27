@@ -78,7 +78,8 @@ class JadwalController extends Controller
                 ], 200);        
             }
     
-    
+            
+
             // validate guru, apakah sudah mengajar atau belum
             $between_number = [$req->jam_awal, (int)$req->jam_akhir];
             $check_jadwal_guru = true;
@@ -98,7 +99,7 @@ class JadwalController extends Controller
                     }
                 }
             }
-    
+
             if(!$check_jadwal_guru){
                 return response([
                     'status' => false,
@@ -106,6 +107,38 @@ class JadwalController extends Controller
                     'data' => '',
                     'debug' => [
                         'count' => $check_jadwal_guru,
+                        'between' => $between_number
+                    ],
+                ]);
+            }
+
+            // validate apakah jam itu kosong
+            $check_jadwal_kosong = true;
+            $_jadwal = Jadwal::
+                where('id_semester', $this->id_semester)
+                ->whereNot('id', $req->id)
+                ->where('id_hari', $req->id_hari)
+                ->where('id_kelas', $req->id_kelas)->get();
+
+            if(count($_jadwal) > 0){
+                for ($i=0; $i < count($_jadwal); $i++) { 
+                    $jadwal = $_jadwal[$i];
+                    $between_jadwal = range($jadwal->jam_awal, $jadwal->jam_akhir);
+                    $between_input = $between_number;
+                    if(count(array_intersect($between_jadwal, $between_input)) > 0){
+                        $check_jadwal_kosong = false;
+                        break;
+                    }
+                }
+            }
+
+            if(!$check_jadwal_kosong){
+                return response([
+                    'status' => false,
+                    'message' => 'Sudah ada jadwal lain',
+                    'data' => '',
+                    'debug' => [
+                        'count' => $check_jadwal_kosong,
                         'between' => $between_number
                     ],
                 ]);
@@ -279,6 +312,40 @@ class JadwalController extends Controller
                     'data' => '',
                     'debug' => [
                         'count' => $check_jadwal_guru,
+                        'between' => $between_number
+                    ],
+                ]);
+            }
+
+            // validate apakah jam itu kosong
+            $check_jadwal_kosong = true;
+            $_jadwal = Jadwal::
+                where('id_semester', $this->id_semester)
+                ->whereNot('id', $req->id)
+                ->where('id_hari', $req->id_hari)
+                ->get();
+
+
+            if(count($_jadwal) > 0){
+                for ($i=0; $i < count($_jadwal); $i++) { 
+                    $jadwal = $_jadwal[$i];
+                    $between_jadwal = range($jadwal->jam_awal, $jadwal->jam_akhir);
+                    $between_input = $between_number;
+                    if(count(array_intersect($between_jadwal, $between_input)) > 0){
+                        $check_jadwal_kosong = false;
+                        break;
+                    }
+                }
+            }
+
+
+            if(!$check_jadwal_kosong){
+                return response([
+                    'status' => false,
+                    'message' => 'Sudah ada jadwal lain',
+                    'data' => '',
+                    'debug' => [
+                        'count' => $check_jadwal_kosong,
                         'between' => $between_number
                     ],
                 ]);

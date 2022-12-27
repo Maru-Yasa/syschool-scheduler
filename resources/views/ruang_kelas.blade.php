@@ -20,7 +20,7 @@
             @csrf
             <div class="mb-3">
                 <label for="">Nama Ruang Kelas : </label>
-                <input type="text" name="nama" placeholder="Nama mata pelajaran" class="form-control">
+                <input type="text" name="nama" placeholder="Nama ruang" class="form-control">
                 <div hidden id="validation_nama" class="text-danger">
 
                 </div>
@@ -59,7 +59,7 @@
             @csrf
             <div class="mb-3">
                 <label for="">Nama Ruang Kelas : </label>
-                <input type="text" name="nama" placeholder="Nama mata pelajaran" class="form-control">
+                <input type="text" name="nama" placeholder="Nama ruang" class="form-control">
                 <div hidden id="validation_edit_nama" class="text-danger">
 
                 </div>
