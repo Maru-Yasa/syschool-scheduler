@@ -9,6 +9,75 @@
 
 @section('content')
 
+{{-- modal add jadwal --}}
+<div class="modal fade" id="modal_add_jadwal" role="dialog" aria-labelledby="modal_add_jadwal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_add_jadwal">Tambah Jadwal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        
+            <form id="form_tambah_jadwal" action="">
+                <input type="text" hidden name="id_kelas">
+                <div class="mb-3 d-flex flex-column">
+                    <label for="">Ruang Kelas :</label>
+                    <select class="form-control form-control-sm w-100" name="id_ruang_kelas" id="">
+                        <option value="" disabled selected>-- Pilih Ruang Kelas --</option>
+                    </select>
+                    <div hidden id="validation_id_ruang_kelas" class="text-danger text-sm validation">
+                    </div>
+                </div>
+                <div class="mb-3 d-flex flex-column">
+                    <label for="">Guru :</label>
+                    <select class="form-control form-control-sm" name="id_guru" id="">
+                        <option value="" disabled selected>-- Pilih Guru --</option>
+                    </select>
+                    <div hidden id="validation_id_guru" class="text-danger text-sm validation">
+                    </div>
+                </div>
+                <div class="mb-3 d-flex flex-column">
+                    <label for="">Mapel :</label>
+                    <select class="form-control form-control-sm" name="id_mapel" id="">
+                        <option value="" disabled selected>-- Pilih Mapel --</option>
+                    </select>
+                    <div hidden id="validation_id_mapel" class="text-danger text-sm validation">
+
+                    </div>
+                </div>
+                <div class="mb-3 d-flex flex-column">
+                    <label for="">Pilih Hari :</label>
+                    <select class="form-control form-control-sm" name="id_hari" id="">
+                        <option value="" disabled selected>-- Pilih Hari --</option>
+                    </select>
+                    <div hidden id="validation_id_hari" class="text-danger text-sm validation">
+
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label for="">JP Awal</label>
+                        <input name="jam_awal" type="number" class="form-control">
+                    </div>
+                    <div class="col">
+                        <label for="">JP Akhir</label>
+                        <input name="jam_akhir" type="number" class="form-control">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
 {{-- modal print --}}
 <div class="modal fade" id="modal_print_jadwal" role="dialog" aria-labelledby="modal_edit_jadwal" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -90,74 +159,6 @@
     </div>
 </div>
 
-{{-- modal add jadwal --}}
-<div class="modal fade" id="modal_add_jadwal" role="dialog" aria-labelledby="modal_add_jadwal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modal_add_jadwal">Tambah Jadwal</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-        
-            <form id="form_tambah_jadwal" action="">
-                <input type="text" hidden name="id_kelas">
-                <div class="mb-3 d-flex flex-column">
-                    <label for="">Ruang Kelas :</label>
-                    <select class="form-control form-control-sm w-100" name="id_ruang_kelas" id="">
-                        <option value="" disabled selected>-- Pilih Ruang Kelas --</option>
-                    </select>
-                    <div hidden id="validation_id_ruang_kelas" class="text-danger text-sm validation">
-                    </div>
-                </div>
-                <div class="mb-3 d-flex flex-column">
-                    <label for="">Guru :</label>
-                    <select class="form-control form-control-sm" name="id_guru" id="">
-                        <option value="" disabled selected>-- Pilih Guru --</option>
-                    </select>
-                    <div hidden id="validation_id_guru" class="text-danger text-sm validation">
-                    </div>
-                </div>
-                <div class="mb-3 d-flex flex-column">
-                    <label for="">Mapel :</label>
-                    <select class="form-control form-control-sm" name="id_mapel" id="">
-                        <option value="" disabled selected>-- Pilih Mapel --</option>
-                    </select>
-                    <div hidden id="validation_id_mapel" class="text-danger text-sm validation">
-
-                    </div>
-                </div>
-                <div class="mb-3 d-flex flex-column">
-                    <label for="">Pilih Hari :</label>
-                    <select class="form-control form-control-sm" name="id_hari" id="">
-                        <option value="" disabled selected>-- Pilih Hari --</option>
-                    </select>
-                    <div hidden id="validation_id_hari" class="text-danger text-sm validation">
-
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <div class="col">
-                        <label for="">JP Awal</label>
-                        <input name="jam_awal" type="number" class="form-control">
-                    </div>
-                    <div class="col">
-                        <label for="">JP Akhir</label>
-                        <input name="jam_akhir" type="number" class="form-control">
-                    </div>
-                </div>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </form>
-        </div>
-      </div>
-    </div>
-</div>
 
 <div class="bg-white w-100 rounded border p-4 mb-3">
     <div class="d-flex">

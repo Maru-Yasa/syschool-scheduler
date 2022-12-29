@@ -14,7 +14,7 @@
     <x-adminlte-profile-widget class="col-12 px-0 elevation-0" name="{{ $user->name }}" desc="{{ $user->role }}" theme="primary"
     img="{{url('image/user/'.$user->profile)}}">
         <x-adminlte-profile-col-item class="text-primary border-right" icon="fas fa-lg fa-clock"
-            title="Total Jam Mengajar" text="{{$total_jam_mengajar}} jam" size=4 badge="primary"/>
+            title="Total Jam Mengajar" text="{{round($total_jam_mengajar)}} jam" size=4 badge="primary"/>
         <x-adminlte-profile-col-item class="text-danger border-right" icon="fas fa-lg fa-clock" title="Total JP"
             text="{{$total_JP}} JP" size=4 badge="danger"/>
         <x-adminlte-profile-col-item class="text-warning" icon="fas fa-lg fa-users" title="{{ $semester_sekarang->nama_semester }}"

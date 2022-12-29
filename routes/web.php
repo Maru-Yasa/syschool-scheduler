@@ -22,6 +22,19 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth', 'menu.config']], function(){
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     
+
+    Route::group(['prefix' => 'tools','middleware' => 'admin'], function(){
+        Route::group(['prefix' => "autoGenerateUser"], function(){
+            Route::get('/', 'App\Http\Controllers\Tools\AutoGenerateUser@view')->name('auto_generate_user_view');
+            Route::get('/allUser', 'App\Http\Controllers\Tools\AutoGenerateUser@getAll')->name('auto_generate_user_all_data');
+
+            Route::post('/generate', 'App\Http\Controllers\Tools\AutoGenerateUser@generate')->name('auto_generate_user');
+            Route::get('/batch/{id_batch}', 'App\Http\Controllers\Tools\AutoGenerateUser@infoBatch')->name('auto_generate_user_batch_info');
+            Route::get('/export', 'App\Http\Controllers\Tools\AutoGenerateUser@export')->name('auto_generate_user_export');
+    
+        });
+    });
+
     Route::group(['prefix' => 'cetak'], function(){
 
         Route::group(['middleware' => 'admin'], function(){

@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^2.0",
         "barryvdh/laravel-snappy": "^1.0",
+        "fakerphp/faker": "^1.21",
         "guzzlehttp/guzzle": "^7.2",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "jeroennoten/laravel-adminlte": "^3.8",
@@ -16,10 +17,11 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
+        "maatwebsite/excel": "^3.1",
+        "psr/simple-cache": "^2.0",
         "yajra/laravel-datatables-oracle": "^10.0"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
         "laravel-lang/attributes": "^2.0",
         "laravel-lang/lang": "^12.0",
         "laravel-lang/publisher": "^14.3",

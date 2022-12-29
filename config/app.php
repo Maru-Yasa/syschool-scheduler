@@ -2,6 +2,7 @@
 
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Support\Facades\Facade;
+use Maatwebsite\Excel\Excel;
 
 return [
 
@@ -197,8 +198,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
-        App\Providers\FortifyServiceProvider::class
-
+        App\Providers\FortifyServiceProvider::class,
     ],
 
     /*

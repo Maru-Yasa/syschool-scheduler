@@ -18,7 +18,9 @@
 
         body {
             font-family: 'Poppins', sans-serif !important;
+            padding-right: 0 !important;
         }
+
     </style>
 @stop
 

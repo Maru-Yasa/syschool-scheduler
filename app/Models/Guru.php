@@ -17,4 +17,14 @@ class Guru extends Model
         return $this->hasMany('App\Models\Jadwal', 'id_guru');
     }
 
+    static function isHaveUser($id_guru)
+    {
+        $guru_user = User::all()->where('id_guru', $id_guru)->count();
+        if($guru_user < 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 }

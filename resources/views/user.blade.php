@@ -178,7 +178,6 @@
         </thead>
         <tbody></tbody>
     </table>
-
 </div>
 @endsection
 

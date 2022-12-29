@@ -48,6 +48,11 @@ return [
                 ]
             ],
         ],
+        [
+            'text' => 'Auto Generate User',
+            'url' => 'tools/autoGenerateUser',
+            'icon' => 'fas fa-fw fa-users'
+        ],
         ['header' => 'MASTER DATA'],
         [
             'text'        => 'Users',
