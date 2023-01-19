@@ -151,6 +151,7 @@
                 
             </div>
             <div class="modal-footer">
+                <input type="text" hidden name="id_kelas" id="id_kelas_edit">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
                 <button type="submit" class="btn btn-primary" id="button_edit" data-id-kelas="">Simpan</button>
             </form>
@@ -557,6 +558,8 @@
 
                         //jam akhir
                         $("#modal_edit_jadwal input[name=jam_akhir]").val(jadwal.jam_akhir)
+
+                        $("#modal_edit_jadwal input[name=id_kelas]").val(jadwal.id_kelas)
                         
                         // guru
                         $.ajax({
@@ -628,6 +631,7 @@
                 e.preventDefault()
                 const formData = new FormData($('#form_edit_jadwal')[0])
                 const id_kelas = $('button_edit').data('id-kelas');
+                // formData.append('id_kelas', id_kelas)
                 $.ajax({
                     type: 'post',
                     method: 'post',

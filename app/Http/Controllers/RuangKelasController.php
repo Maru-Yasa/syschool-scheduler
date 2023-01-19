@@ -82,7 +82,7 @@ class RuangKelasController extends Controller
         try {
             $validator = Validator::make($req->all(), [
                 'nama' => 'required',
-                'owner' => 'required'
+                'owner' => ''
             ]);
 
             if($validator->fails()){

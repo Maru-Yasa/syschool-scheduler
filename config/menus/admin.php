@@ -83,6 +83,13 @@ return [
             'label_color' => 'success',
         ],
         [
+            'text'        => 'Tingkat Kelas',
+            'url'         => 'tingkat',
+            'icon'        => 'fa fa-fw fa-list',
+            // 'label'       => 4,
+            'label_color' => 'success',
+        ],
+        [
             'text'        => 'Kelas',
             'url'         => 'kelas',
             'icon'        => 'fa fa-fw fa-list',

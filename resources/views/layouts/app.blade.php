@@ -25,7 +25,6 @@
 @stop
 
 @section('js')
-
     @yield('js')
 
 @stop

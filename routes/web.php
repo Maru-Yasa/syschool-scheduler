@@ -127,6 +127,16 @@ Route::group(['middleware' => ['auth', 'menu.config']], function(){
         Route::get('/get', 'App\Http\Controllers\HariController@getAll')->name('get_hari');
     });
 
+    Route::group(['prefix' => 'tingkat'], function(){
+        Route::group(['middleware' => 'admin'], function(){
+            Route::get('/', 'App\Http\Controllers\TingkatKelasController@view');
+            Route::get('/{id}/delete', 'App\Http\Controllers\TingkatKelasController@delete')->name('delete_tingkat');
+            Route::post('/edit', 'App\Http\Controllers\TingkatKelasController@edit')->name('edit_tingkat');
+            Route::post('/tambah', 'App\Http\Controllers\TingkatKelasController@tambah')->name('tambah_tingkat');
+        });
+        Route::get('/get', 'App\Http\Controllers\TingkatKelasController@getAll')->name('get_tingkat');
+    });
+
     Route::group(['prefix' => 'kelas'], function(){
         Route::group(['middleware' => 'admin'], function(){
             Route::get('/', 'App\Http\Controllers\KelasController@view');

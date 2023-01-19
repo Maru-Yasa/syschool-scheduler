@@ -206,7 +206,8 @@ class JadwalController extends Controller
     public function getJadwalByKelas(Request $req)
     {
         $id_kelas = $req->query('id_kelas');
-        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'ruang_kelas', 'hari')->where('id_kelas', $id_kelas)->where('id_semester', $this->id_semester)->get();
+        $jadwal_raw = Jadwal::with('guru', 'mapel', 'kelas', 'r                        $_jadwalDebug = $_jadwal;
+        uang_kelas', 'hari')->where('id_kelas', $id_kelas)->where('id_semester', $this->id_semester)->get();
         $jadwal_group = [];
         foreach ($jadwal_raw as $key => $jadwal) {
             $jadwal_group[$jadwal->id_kelas][] = $jadwal;
@@ -265,6 +266,8 @@ class JadwalController extends Controller
 
     public function edit(Request $req)
     {
+        $_jadwalDebug = [];
+        // return response($req->all());
         try {
             $validator = Validator::make($req->all(), [
                 "id_guru" => 'required',
@@ -318,38 +321,41 @@ class JadwalController extends Controller
             }
 
             // validate apakah jam itu kosong
-            $check_jadwal_kosong = true;
-            $_jadwal = Jadwal::
-                where('id_semester', $this->id_semester)
-                ->whereNot('id', $req->id)
-                ->where('id_hari', $req->id_hari)
-                ->get();
+            // $check_jadwal_kosong = true;
+            // $_jadwal = Jadwal::
+            //     where('id_semester', $this->id_semester)
+            //     ->whereNot('id', $req->id)
+            //     ->where('id_hari', $req->id_hari)
+            //     ->where('id_kelas', $req->id_kelas)
+            //     ->get();
 
 
-            if(count($_jadwal) > 0){
-                for ($i=0; $i < count($_jadwal); $i++) { 
-                    $jadwal = $_jadwal[$i];
-                    $between_jadwal = range($jadwal->jam_awal, $jadwal->jam_akhir);
-                    $between_input = $between_number;
-                    if(count(array_intersect($between_jadwal, $between_input)) > 0){
-                        $check_jadwal_kosong = false;
-                        break;
-                    }
-                }
-            }
+            // if(count($_jadwal) > 0){
+            //     for ($i=0; $i < count($_jadwal); $i++) { 
+            //         $jadwal = $_jadwal[$i];
+            //         $between_jadwal = range($jadwal->jam_awal, $jadwal->jam_akhir);
+            //         $between_input = $between_number;
+            //         if(count(array_intersect($between_jadwal, $between_input)) > 0){
+            //             $check_jadwal_kosong = false;
+            //             $_jadwalDebug = $_jadwal;
+            //             break;   
+            //         }
+            //     }
+            // }
 
 
-            if(!$check_jadwal_kosong){
-                return response([
-                    'status' => false,
-                    'message' => 'Sudah ada jadwal lain',
-                    'data' => '',
-                    'debug' => [
-                        'count' => $check_jadwal_kosong,
-                        'between' => $between_number
-                    ],
-                ]);
-            }
+            // if(!$check_jadwal_kosong){
+            //     return response([
+            //         'status' => false,
+            //         'message' => 'Sudah ada jadwal lain',
+            //         'data' => '',
+            //         'debug' => [
+            //             'count' => $check_jadwal_kosong,
+            //             'between' => $between_number,
+            //             'jadwal' => $_jadwalDebug
+            //         ],
+            //     ]);
+            // }
 
             // validate ruang kelas, apakah sudah ditempati atau belum
             $check_jadwal_ruang = true;
@@ -382,7 +388,7 @@ class JadwalController extends Controller
                 ]);
             }
 
-            $jadwal->update($req->all());
+            $jadwal->update($req->except(['id']));
 
             return response([
                 'status' => true,

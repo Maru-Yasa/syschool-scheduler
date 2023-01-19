@@ -141,7 +141,8 @@
         }
 
     function editKelas(e){
-        
+        e.preventDefault()
+        console.log('test');
         const data = $(e).data('json')
         
         $("#modalEditKelas").modal('show')

@@ -114,21 +114,24 @@
         });
 
     function editRuangKelas(e){
-        
         const data = $(e).data('json')
         
         $("#modalEditRuangKelas").modal('show')
         $("#modalEditRuangKelas").on('shown.bs.modal', () => {
+            
 
             // initialize
             $("input[name='nama']").val(data.nama)
-            $("#id_ruang_kelas").val(data.id)
+            $("#ruang_kelas").val(data.id)
             $("#preview_foto_guru").prop('src', `{{ url('image/guru/${data.profile}') }}`)
 
             // submit handler
-            $("#button_edit_guru").off().on('click', (e) => {
-                
-                const formData = new FormData($("#form_edit_guru")[0])
+            $("#form_edit_ruang_kelas").off().on('submit', (e) => {
+                e.preventDefault()
+                const formData = new FormData($("#form_edit_ruang_kelas")[0])
+                for (var pair of formData.entries()) {
+                    console.log(pair[0]+ ', ' + pair[1]); 
+                }
                 $.ajax({
                     type: 'post',
                     method: 'post',

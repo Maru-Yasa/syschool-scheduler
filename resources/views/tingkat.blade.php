@@ -1,42 +1,33 @@
 @extends('layouts.app')
 
 @section('header')
-<h1 class="fw-bold">Jurusan</h1>
+<h1 class="fw-bold">Tingkat Kelas</h1>
 @endsection
 
 @section('content')
 
-<div class="modal fade" tabindex="" id="modalTambahJurusan" role="dialog">
+<div class="modal fade" id="modalTambahKelas" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Tambah Jurusan</h5>
+          <h5 class="modal-title">Tambah Tingkat Kelas</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="formTambahJurusan" action="">
+          <form id="formTambahKelas" action=""> 
             @csrf
             <div class="mb-3">
-                <label for="">Nama: </label>
-                <input type="text" name="nama_jurusan" placeholder="Nama jurusan" class="form-control">
-                <div hidden id="validation_nama_jurusan" class="text-danger validation">
-
-                </div>
-            </div>
-            <div class="mb-3 d-flex flex-column">
-                <label for="">Icon Jurusan: </label>
-                <select type="text" id="jurusan_icon" name="icon" placeholder="Icon jurusan" class="form-control">
-                    <option value="" disabled selected>-- Pilih Icon --</option>
-                </select>
-                <div hidden id="validation_icon" class="text-danger validation">
+                <label for="">Nama Tingkat: </label>
+                <input type="text" name="tingkat" placeholder="Nama kelas" class="form-control">
+                <div hidden id="validation_tingkat" class="text-danger validation">
 
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" id="buttonTambahJurusan" class="btn btn-primary">Tambah</button>
+          <button type="submit" id="buttonTambahKelas" class="btn btn-primary">Tambah</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
         </div>
         </form>
@@ -44,38 +35,29 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="" id="modalEditJurusan" role="dialog">
+<div class="modal fade" id="modalEditKelas" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edit Jurusan</h5>
+          <h5 class="modal-title">Edit TingkatKelas</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="form_edit_jurusan" action="">
+          <form id="form_edit_kelas" action="">
             @csrf
             <div class="mb-3">
-                <label for="">Nama: </label>
-                <input type="text" name="nama_jurusan" placeholder="Nama jurusan" class="form-control">
-                <div hidden id="validation_edit_nama_jurusan" class="text-danger validation">
-
-                </div>
-            </div>
-            <div class="mb-3 d-flex flex-column">
-                <label for="">Icon Jurusan: </label>
-                <select type="text" id="jurusan_icon" name="icon" placeholder="Icon jurusan" class="jurusan_icon form-control">
-                    <option value="" disabled selected>-- Pilih Icon --</option>
-                </select>
-                <div hidden id="validation_edit_icon" class="text-danger validation">
+                <label for="">Nama Tingkat: </label>
+                <input type="text" name="tingkat" placeholder="Nama kelas" class="form-control">
+                <div hidden id="validation_edit_tingkat" class="text-danger validation">
 
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <input hidden type="text" id="id_jurusan" name="id">
-            <button type="submit" id="button_edit_jurusan" class="btn btn-primary">Edit</button>
+            <input hidden type="text" id="id_kelas" name="id">
+            <button type="submit" id="button_edit_kelas" class="btn btn-primary">Edit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
         </div>
         </form>
@@ -84,12 +66,11 @@
 </div>
 
 <div class="bg-white w-100 rounded border p-4">
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalTambahJurusan" >Tambah Jurusan <i class="bi bi-plus"></i></button>
-    <table class="table table-bordered w-100" id="table_jurusan">
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalTambahKelas" >Tambah TingkatKelas <i class="bi bi-plus"></i></button>
+    <table class="table table-bordered w-100" id="table_tingkat">
         <thead class="bg-primary">
                 <td width="5%">No</td>
-                <td width="5%">Icons</td>
-                <td>Nama</td>
+                <td>Nama Tingkat</td>
                 <td width="5%">Aksi</td>
         </thead>
         <tbody></tbody>
@@ -101,53 +82,79 @@
 @section('js')
 <x-script />
 <script>
-        const table_jurusan = $("#table_jurusan").DataTable({
-            ajax: "{{ route('get_jurusan') }}",
+        const table_tingkat = $("#table_tingkat").DataTable({
+            ajax: "{{ route('get_tingkat') }}",
             responsive: true,
             columns: [
                 { data: 'DT_RowIndex', class: 'text-center' },
-                { data: 'icon', class: 'text-center' },
-                { data: 'nama_jurusan' },
+                { data: 'tingkat' },
                 { data: 'aksi' }
             ]
         });
 
-    function editJurusan(e){
+    const configSelect = {
+            ajax: {
+                url: "{{ route('get_jurusan') }}",
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
+
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                processResults: function (res) {
+                    const data = res.data
+                    let selectData = []
+                    data.forEach((val) => {
+                        selectData.push({
+                            id: val.id,
+                            text: val.nama_jurusan
+                        })
+                    })
+                    return {
+                        results: selectData
+                    };
+                }
+            }
+        }
+
+    function editTingkatKelas(e){
         
         const data = $(e).data('json')
         
-        $("#modalEditJurusan").modal('show')
-        $("#modalEditJurusan").on('shown.bs.modal', () => {
+        $("#modalEditKelas").modal('show')
+        $("#modalEditKelas").on('shown.bs.modal', () => {
 
             // initialize
-            $("input[name='nama_jurusan']").val(data.nama_jurusan)
-            $("#id_jurusan").val(data.id)
-            $("#preview_foto_jurusan").prop('src', `{{ url('image/jurusan/${data.profile}') }}`)
-            $("[id=jurusan_icon]").val(data.icon).trigger('change')
-
+            $("input[name='tingkat']").val(data.tingkat)
+            $("select[name=id_jurusan]").val(data.id_jurusan).trigger('change')
+            $("#id_kelas").val(data.id)
+            $("#preview_foto_kelas").prop('src', `{{ url('image/kelas/${data.profile}') }}`)
 
             // submit handler
-            $("#form_edit_jurusan").off().on('submit',(e) => {
+            $("#form_edit_kelas").off().on('submit',(e) => {
                 e.preventDefault()
                 $(`input`).removeClass('is-invalid')
                 
-                const formData = new FormData($("#form_edit_jurusan")[0])
-                $('#button_edit_jurusan').prop('disabled', true);
+                const formData = new FormData($("#form_edit_kelas")[0])
+                $('#button_edit_kelas').prop('disabled', true);
                 $.ajax({
                     type: 'post',
                     method: 'post',
-                    url: "{{ route('edit_jurusan') }}",
+                    url: "{{ route('edit_tingkat') }}",
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: (res) => {
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
-                        $('#button_edit_jurusan').prop('disabled', false);
+                        $('#button_edit_kelas').prop('disabled', false);
                         
                         if(res.status){
-                            table_jurusan.ajax.reload()
-                            $("#modalEditJurusan").modal('hide')
+                            table_tingkat.ajax.reload()
+                            $("#modalEditKelas").modal('hide')
                             toastr.success(res.message)
                         }else{
                             toastr.error(res.message)
@@ -159,15 +166,14 @@
                         }
                     },
                     error: (res) => {
-                        $('#button_edit_jurusan').prop('disabled', false);
+                        $('#button_edit_kelas').prop('disabled', false);
                         
                     }
                 })
             })
         })
     }
-    
-    function deleteJurusan(id) {
+    function deleteTingkatKelas(id) {
         Swal.fire({
             icon: 'warning',
             title: 'Peringatan',
@@ -183,11 +189,11 @@
                 $.ajax({
                     type:'get',
                     method: 'get',
-                    url:`{{ url('jurusan/${id}/delete') }}`,
+                    url:`{{ url('tingkat/${id}/delete') }}`,
                     success:(res) => {
                         if(res.status){
                             toastr.success(res.message)
-                            table_jurusan.ajax.reload()
+                            table_tingkat.ajax.reload()
                         }else{
                             toastr.error(res.message)
                         }
@@ -196,57 +202,31 @@
             }
         })
     }
-
-    function renderInputIcon(id) {
-        let biIcons = [];
-        $.ajax({
-            type: 'get', 
-            url: "{{ url('bi-icons.json') }}",
-            success: (res) => {        
-                const icons = res.icons
-                icons.forEach((val) => {
-                    biIcons.push({
-                        id: val,
-                        text: `<i class="bi ${val}"></i>`
-                    })
-                })
-                $(`[id=${id}]`).select2({
-                    data: biIcons,
-                    escapeMarkup: function (text) { return text; },
-                })
-
-            }
-        })
-    }
-
     $(document).ready(() => {
         
-
-        renderInputIcon('jurusan_icon')
-
-        $("#modalTambahJurusan").on('shown.bs.modal', () => {
-            $("#formTambahJurusan").off().on('submit',(e) => {
+        $("#modalTambahKelas").on('shown.bs.modal', () => {
+            $("#formTambahKelas").off().on('submit',(e) => {
                 e.preventDefault()
                 
-                const formData = new FormData($("#formTambahJurusan")[0])
-                $('#buttonTambahJurusan').prop('disabled', true);
+                const formData = new FormData($("#formTambahKelas")[0])
+                $('#buttonTambahKelas').prop('disabled', true);
 
                 $.ajax({
                     type: 'post',
                     method: 'post',
-                    url: "{{ route('tambah_jurusan') }}",
+                    url: "{{ route('tambah_tingkat') }}",
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: (res) => {
                         $(`input`).removeClass('is-invalid')
                         $('.validation').empty().prop('hidden', true)
-                        $('#buttonTambahJurusan').prop('disabled', false);
+                        $('#buttonTambahKelas').prop('disabled', false);
                         
                         if(res.status){
                             toastr.success(res.message)
-                            $("#formTambahJurusan").trigger('reset')
-                            table_jurusan.ajax.reload()
+                            $("#formTambahKelas").trigger('reset')
+                            table_tingkat.ajax.reload()
                         }else{
                             toastr.error(res.message)
                             Object.keys(res.messages).forEach((value, key) => {
@@ -258,7 +238,7 @@
                         }
                     },
                     error: (res) => {
-                        $('#buttonTambahJurusan').prop('disabled', false);
+                        $('#buttonTambahKelas').prop('disabled', false);
 
                         
                     }
